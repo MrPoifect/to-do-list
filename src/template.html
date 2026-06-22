@@ -6,6 +6,17 @@
     <title>Template</title>
 </head>
 <body>
-    
+    <Button id="new-project">New Project</Button>
+    <button id="new-task">New task</button>
+    <dialog id="project-modal">
+        <form id="p-form">
+            <label for="p-title">Project Name</label>
+            <input type="text" id="p-title" name="p-title"/>
+            <button id="p-submit" type="submit">Submit</button>
+            <button id="p-close">Close</button>
+        </form>
+    </dialog>
+
+    <div id="projects-container"></div>
 </body>
 </html>
