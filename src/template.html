@@ -16,7 +16,26 @@
             <button id="p-close">Close</button>
         </form>
     </dialog>
+    
+    <dialog id="task-modal">
+        <form id="t-form">
+            <label for="t-title">Task Name</label>
+            <input type="text" id="t-title" name="t-title"/>
+            <label for="t-description">Description</label>
+            <input type="text" id="t-description" name="t-description"/>
+            
+            
+            <label for="project-list">Project:</label>
+            <select name="project-list" id="project-list"></select>                 
+            <label for="due-date">Due Date:</label>
+            <input type="date" name="due-date" id="due-date">
+            <button id="t-submit" type="submit">Submit</button>
+            <button id="t-close">Close</button>
+
+        </form>
+    </dialog>
 
     <div id="projects-container"></div>
+    <div id="tasks-container"></div>
 </body>
 </html>
