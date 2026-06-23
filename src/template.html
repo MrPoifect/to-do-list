@@ -6,8 +6,15 @@
     <title>Template</title>
 </head>
 <body>
-    <Button id="new-project">New Project</Button>
-    <button id="new-task">New task</button>
+    <div id="ui-container">
+        <header id="header"><button id="menu-btn"></button> to-do.</header>
+        <div id="content-container">
+            <div id="side-bar" class="opened">test</div>
+            <div id="tasks-container"><p>This is the content of tasks</p></div>
+        </div>
+    </div>
+   <!-- <Button id="new-project">New Project</Button>
+    <button id="new-task">New task</button> -->
     <dialog id="project-modal">
         <form id="p-form">
             <label for="p-title">Project Name</label>
@@ -19,7 +26,7 @@
     
     <dialog id="task-modal">
         <form id="t-form">
-            <label for="t-title">Task Name</label>
+            <label for="t-title">Title:</label>
             <input type="text" id="t-title" name="t-title"/>
             <label for="t-description">Description</label>
             <input type="text" id="t-description" name="t-description"/>
@@ -35,7 +42,7 @@
         </form>
     </dialog>
 
-    <div id="projects-container"></div>
-    <div id="tasks-container"></div>
+    <!--<div id="projects-container"></div>
+    <div id="tasks-container"></div> -->
 </body>
 </html>

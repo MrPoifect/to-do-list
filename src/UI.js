@@ -1,9 +1,13 @@
-import {addNewTask, data, addNewProject, saveData} from "./storage.js";
+import {addNewTask, data, addNewProject, saveData,
+    deleteProject
+} from "./storage.js";
+import "./UIStyles.css"
 export {refreshContent};
 export {addTestButtons};
 
+const menuBtn = document.getElementById("menu-btn")
 
-
+adjustMenuForScreen();
 
 
 function refreshContent() {
@@ -89,9 +93,24 @@ function updateProjectList() {
 
 
 
+menuBtn.addEventListener("click", toggleMenu);
 
+function toggleMenu() {
+    const menuDiv = document.getElementById("side-bar");
+    const sideBarWidth = menuDiv.clientWidth;
+    if (sideBarWidth > 0) {
+        menuDiv.className = "collapsed"
+    } else {
+        menuDiv.className = "opened"
+    }
+}
 
-
+function adjustMenuForScreen() {
+    const menuDiv = document.getElementById("side-bar");
+    if (window.innerWidth <= 767) {
+        menuDiv.className = "collapsed"
+    }
+}
 
 
 
@@ -159,19 +178,7 @@ function submitTask(e) {
 
 }
 
-function deleteProject(UUID) {
-    //delete all child tasks first
-    for (let i = data.tasks.length - 1; i >= 0; i--) { 
-        if (data.tasks[i].projectId === UUID) {
-            data.tasks.splice(i, 1);
-        }
-    }
-    const targetProject = data.projects.find(project => project.id === UUID)
-    const projectIndex = data.projects.indexOf(targetProject);
-    data.projects.splice(projectIndex, 1);
-    saveData();
-    refreshContent();
-}
+
 
 function deleteTask(UUID) {
     const targetTask = data.tasks.find(task => task.id === UUID)

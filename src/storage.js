@@ -1,9 +1,12 @@
+import { refreshContent } from "./UI.js";
 
 export {data};
 export {addNewProject};
 export {saveData};
 export {loadData};
 export {addNewTask};
+export {deleteProject};
+
 
 
 const data = {
@@ -59,4 +62,19 @@ function loadData() {
         data.projects = storedData.projects;
         data.tasks = storedData.tasks;
     }
+}
+
+
+function deleteProject(UUID) {
+    //delete all child tasks first
+    for (let i = data.tasks.length - 1; i >= 0; i--) { 
+        if (data.tasks[i].projectId === UUID) {
+            data.tasks.splice(i, 1);
+        }
+    }
+    const targetProject = data.projects.find(project => project.id === UUID)
+    const projectIndex = data.projects.indexOf(targetProject);
+    data.projects.splice(projectIndex, 1);
+    saveData();
+    refreshContent();
 }
