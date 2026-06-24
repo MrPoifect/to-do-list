@@ -7,14 +7,14 @@ const newProjectForm = document.getElementById("p-form");
 
 import { data } from "./storage.js"; 
 import { addNewProject } from "./storage.js";
-import { refreshContent } from "./UI.js";
+import { refreshContent, addButtonEvents, } from "./UI.js";
 import { loadData } from "./storage.js";
-import { addTestButtons } from "./UI.js";
+
 
 
 loadData();
 refreshContent();
-addTestButtons();
+addButtonEvents();
 
 
 

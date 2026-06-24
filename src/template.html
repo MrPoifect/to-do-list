@@ -7,10 +7,41 @@
 </head>
 <body>
     <div id="ui-container">
-        <header id="header"><button id="menu-btn"></button> to-do.</header>
+        <header id="header"><button id="menu-btn"></button>ToDo</header>
         <div id="content-container">
-            <div id="side-bar" class="opened">test</div>
-            <div id="tasks-container"><p>This is the content of tasks</p></div>
+            <div id="side-bar" class="opened">
+                <div id="side-bar-nav">
+                    <button class="nav-button nav all" id="all-btn">
+                        <img class="nav-img nav all" src="./imgs/calendar-month.svg">
+                        <p class="nav-text nav all">All</p>
+                    </button>
+                    <button class="nav-button nav today" id="today-btn">
+                        <img class="nav-img nav today" src="./imgs/calendar-today.svg">
+                        <p class="nav-text nav today">Today</p>
+                    </button>
+                    <button class="nav-button nav week" id="week-btn">
+                        <img class="nav-img nav week" src="./imgs/calendar-week.svg">
+                        <p class="nav-text nav week">Week</p>
+                    </button>
+                    <button class="nav-button nav important" id="important-btn">
+                        <img class="nav-img nav important" src="./imgs/star.svg">
+                        <p class="nav-text nav important">Important</p>
+                    </button>
+                    <button class="nav-button nav completed" id="completed-btn">
+                        <img class="nav-img nav completed" src="./imgs/calendar-check.svg">
+                        <p class="nav-text nav completed">Completed</p>
+                    </button>
+                </div>
+                <div id="side-bar-projects">
+                    <p>Projects</p>
+                    <div id="projects-container">
+
+                    </div>
+                </div>
+            </div>
+            <div id="tasks-container">
+                <div id="tasks-content"><p>This is tasks content</p></div>
+            </div>
         </div>
     </div>
    <!-- <Button id="new-project">New Project</Button>

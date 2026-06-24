@@ -1,11 +1,25 @@
 import {addNewTask, data, addNewProject, saveData,
     deleteProject
 } from "./storage.js";
+import { renderProjectCard } from "./cards.js";
 import "./UIStyles.css"
 export {refreshContent};
-export {addTestButtons};
+export { addButtonEvents };
+export {projectsContainer};
 
 const menuBtn = document.getElementById("menu-btn")
+const allBtn = document.getElementById("all-btn")
+const todayBtn = document.getElementById("today-btn");
+const weekBtn = document.getElementById("week-btn");
+const importantBtn = document.getElementById("important-btn")
+const completedBtn = document.getElementById("completed-btn")
+
+
+allBtn.addEventListener("click", () => handleNavButton("all"));
+todayBtn.addEventListener("click", () => handleNavButton("today"));
+weekBtn.addEventListener("click", () => handleNavButton("week"));
+importantBtn.addEventListener("click", () => handleNavButton("important"));
+completedBtn.addEventListener("click", () => handleNavButton("completed"));
 
 adjustMenuForScreen();
 
@@ -17,33 +31,18 @@ function refreshContent() {
 };
 
 function displayProjects() {
-    document.getElementById("projects-container").innerHTML = "";
+    projectsContainer.innerHTML = "";
 
     for (let i = 0; i < data.projects.length; i++) {
-        const currentProject = data.projects[i];
-        const projectID = currentProject.id;
-
-        const projectsContainer = document.getElementById("projects-container");
-        const newCard = document.createElement("div");
-        newCard.classList.add("project-card");
-        projectsContainer.appendChild(newCard);
-
-        const newTitle = document.createElement("h3");
-        newTitle.classList.add("project-title");
-        newTitle.textContent = currentProject.title;
-        newCard.appendChild(newTitle);
-
-        const newID = document.createElement("p");
-        newID.textContent = ("Project ID: " + projectID)
-        newCard.appendChild(newID);
-
-        const newDeleteBtn = document.createElement("button");
-        newDeleteBtn.textContent = "Delete"
-        newCard.appendChild(newDeleteBtn);
-
-        newDeleteBtn.addEventListener("click", () => deleteProject(projectID));
+        renderProjectCard(i);
     };
-};
+    const newProjectBtn = document.createElement("button");
+    projectsContainer.appendChild(newProjectBtn);
+    newProjectBtn.textContent = "New Project"
+    newProjectBtn.addEventListener("click", function () {
+    newProjectModal.showModal();
+    })
+}
 
 function displayTasks() {
     document.getElementById("tasks-container").innerHTML = "";
@@ -98,19 +97,27 @@ menuBtn.addEventListener("click", toggleMenu);
 function toggleMenu() {
     const menuDiv = document.getElementById("side-bar");
     const sideBarWidth = menuDiv.clientWidth;
+    const tasksDiv = document.getElementById("tasks-container");
     if (sideBarWidth > 0) {
-        menuDiv.className = "collapsed"
+        menuDiv.classList.remove("opened");
+        menuDiv.classList.add("collapsed");
+        tasksDiv.classList.remove("darken");
     } else {
-        menuDiv.className = "opened"
+        menuDiv.classList.remove("collapsed");
+        menuDiv.classList.add("opened");        
+        if (window.screen.width <= 767) {
+            tasksDiv.classList.add("darken");
+        };
     }
 }
 
 function adjustMenuForScreen() {
     const menuDiv = document.getElementById("side-bar");
     if (window.innerWidth <= 767) {
-        menuDiv.className = "collapsed"
+        menuDiv.classList.remove("opened")
+        menuDiv.classList.add("collapsed")
+    };
     }
-}
 
 
 
@@ -118,16 +125,14 @@ function adjustMenuForScreen() {
 
 
 
-const newProjectBtn = document.getElementById("new-project");
+const projectsContainer = document.getElementById("projects-container");
 const newProjectModal = document.getElementById("project-modal");
 const newProjectCloseBtn = document.getElementById("p-close");
 const newProjectForm = document.getElementById("p-form");
 
 
-function addTestButtons() {
-    newProjectBtn.addEventListener("click", function () {
-    newProjectModal.showModal();
-    })
+function addButtonEvents() {
+
 
     newProjectCloseBtn.addEventListener("click", function (e) {
     e.preventDefault();
@@ -188,6 +193,23 @@ function deleteTask(UUID) {
     refreshContent();
 }
 
+
+
+function handleNavButton(choice) {
+
+const allNavElements = document.getElementsByClassName("nav");
+
+for (let i = 0; i < allNavElements.length; i++) {
+    if (allNavElements[i].classList.contains("selected") && 
+    !allNavElements[i].classList.contains(choice)) {
+        allNavElements[i].classList.remove("selected")
+    } else if (allNavElements[i].classList.contains(choice)) {
+        allNavElements[i].classList.add("selected")
+    }
+}
+};
+
+    
 
 
 const newTaskBtn = document.getElementById("new-task");
