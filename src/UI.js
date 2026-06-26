@@ -3,8 +3,8 @@ import {addNewTask, data, addNewProject, saveData,
 } from "./storage.js";
 import { renderProjectCard } from "./cards.js";
 import "./UIStyles.css"
-export {refreshContent};
-export { addButtonEvents };
+import "./sidebar-styles.css"
+export {refreshContent, addButtonEvents, handleProjectSelect};
 export {projectsContainer};
 
 const menuBtn = document.getElementById("menu-btn")
@@ -38,7 +38,8 @@ function displayProjects() {
     };
     const newProjectBtn = document.createElement("button");
     projectsContainer.appendChild(newProjectBtn);
-    newProjectBtn.textContent = "New Project"
+    newProjectBtn.textContent = "New Project +";
+    newProjectBtn.classList.add("project-card", "new-project-btn");
     newProjectBtn.addEventListener("click", function () {
     newProjectModal.showModal();
     })
@@ -130,10 +131,12 @@ const newProjectModal = document.getElementById("project-modal");
 const newProjectCloseBtn = document.getElementById("p-close");
 const newProjectForm = document.getElementById("p-form");
 
+const editProjectModal = document.getElementById("edit-project-modal");
+const editProjectCloseBtn = document.getElementById("edit-p-close");
+const editProjectForm = document.getElementById("edit-p-form")
+
 
 function addButtonEvents() {
-
-
     newProjectCloseBtn.addEventListener("click", function (e) {
     e.preventDefault();
     newProjectModal.close();
@@ -152,7 +155,12 @@ function addButtonEvents() {
 
     newTaskForm.addEventListener("submit", submitTask);
 
+    
+
 }
+
+
+
 
 function submitProject(e) {
     e.preventDefault();
@@ -194,20 +202,49 @@ function deleteTask(UUID) {
 }
 
 
-
+//Highlight selected nav button
 function handleNavButton(choice) {
 
-const allNavElements = document.getElementsByClassName("nav");
-
-for (let i = 0; i < allNavElements.length; i++) {
-    if (allNavElements[i].classList.contains("selected") && 
-    !allNavElements[i].classList.contains(choice)) {
-        allNavElements[i].classList.remove("selected")
-    } else if (allNavElements[i].classList.contains(choice)) {
-        allNavElements[i].classList.add("selected")
+    const allNavElements = document.getElementsByClassName("nav");
+    const allProjectCards = document.getElementsByClassName("project-card");
+    //remove highlight from project card
+    for (let i = 0; i < allProjectCards.length; i++) {
+        if (allProjectCards[i].classList.contains("selected")) {
+            allProjectCards[i].classList.remove("selected")
+        }
     }
-}
+
+    //remove highlight from old choice and put highlight on new
+    for (let i = 0; i < allNavElements.length; i++) {
+        if (allNavElements[i].classList.contains("selected") && 
+        !allNavElements[i].classList.contains(choice)) {
+            allNavElements[i].classList.remove("selected")
+        } else if (allNavElements[i].classList.contains(choice)) {
+            allNavElements[i].classList.add("selected")
+        }
+    }
+};   
+
+//highlight selected project
+function handleProjectSelect(target) {
+
+    const allProjectCards = document.getElementsByClassName("project-card");
+    const allNavElements = document.getElementsByClassName("nav");
+
+    for (let i = 0; i < allNavElements.length; i++) {
+        if (allNavElements[i].classList.contains("selected")) {
+            allNavElements[i].classList.remove("selected")
+        }
+    }
+    for (let i = 0; i < allProjectCards.length; i++) {
+        if (allProjectCards[i].classList.contains("selected")) {
+            allProjectCards[i].classList.remove("selected")
+        }
+    }
+
+    target.classList.add("selected")
 };
+
 
     
 

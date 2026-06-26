@@ -1,11 +1,9 @@
 import { refreshContent } from "./UI.js";
 
 export {data};
-export {addNewProject};
-export {saveData};
-export {loadData};
-export {addNewTask};
-export {deleteProject};
+export { addNewProject, deleteProject, 
+    addNewTask, loadData, saveData, openProject, modifyProjectData};
+
 
 
 
@@ -77,4 +75,17 @@ function deleteProject(UUID) {
     data.projects.splice(projectIndex, 1);
     saveData();
     refreshContent();
+}
+
+function modifyProjectData(UUID, newTitle) {
+    const targetProject = data.projects.find(project => project.id === UUID);
+    if (targetProject.title != newTitle){
+    targetProject.title = newTitle;
+    }
+    saveData();
+    refreshContent();
+}
+
+function openProject(UUID) {
+
 }

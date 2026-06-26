@@ -1,6 +1,12 @@
+@font-face {
+    font-family: roboto;
+    src: url(./fonts/Roboto-Medium.ttf);
+}
+
 * {
     margin: 0;
     padding: 0;
+    font-family: "roboto";
 }
 
 html {
@@ -9,6 +15,12 @@ html {
 
 body {
     height: 100%;
+}
+
+h1 {
+    font-size: 25px;
+    margin-left: 6px;
+    color: rgb(233, 233, 233);
 }
 
 #ui-container {
@@ -48,102 +60,7 @@ height: 100%;
 width: 100%;
 }
 
-#side-bar { 
-    height: 100%;
-    grid-column: 1 / 2;
-    overflow: hidden;
-    background-color:rgb(179, 194, 197)
-}
 
-#side-bar-nav {
-    width: 100%;
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    gap: 16px;
-    padding: 16px 0px;
-    background-color: red;
-}
-
-.nav-button {
-    display: flex;
-    align-items: center;
-    width: 85%;
-    padding: 2px;
-    gap: 4px;
-    border: solid 2px transparent;
-    border-radius: 4px;
-    background-color: rgb(245, 245, 245);
-}
-
-.nav-button:hover {
-    border-color: rgb(50, 99, 122);
-}
-
-.nav-button.selected:hover {
-    background-color: rgb(50, 99, 122);
-}
-
-.nav-button.selected {
-    background-color: rgb(80, 126, 148);
-}
-
-.nav-img {
-    width: 25px;
-    filter: brightness(2);
-}
-
-.nav-text {
-    font-size: 16px;
-    color: rgb(82, 82, 82);
-}
-
-
-
-.nav-text.selected {
-    color: rgb(233, 233, 233);
-}
-
-.nav-img.selected {
-    filter: invert();
-    filter: brightness(7);
-}
-
-.selected {
-    
-}
-
-
-.opened {
-    width: 200px;
-    transition: width 0.2s;
-
-}
-
-.collapsed {
-    width: 0;
-
-}
-
-#side-bar-projects {
-    width: 100%;
-    display: flex;
-    flex-direction: column;
-    gap: 16px;
-    padding: 16px 16px;
-    background-color: blue;
-}
-
-.project-card {
-    background-color: green;
-    width: 85%;
-    display: flex;
-    flex-direction: row;
-}
-
-.modify-btn {
-    background-image: url(./imgs/note-edit-outline.svg);
-}
 
 
 #tasks-content {
