@@ -77,11 +77,13 @@ function deleteProject(UUID) {
     refreshContent();
 }
 
-function modifyProjectData(UUID, newTitle) {
-    const targetProject = data.projects.find(project => project.id === UUID);
-    if (targetProject.title != newTitle){
-    targetProject.title = newTitle;
-    }
+function modifyProjectData(UUID) {
+
+    const targetProject = data.projects.find(project => project.id === UUID)
+    const title = document.getElementById("edit-p-form").elements['edit-p-title'].value;
+
+    targetProject.title = title
+    console.log(UUID);
     saveData();
     refreshContent();
 }

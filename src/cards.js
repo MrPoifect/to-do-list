@@ -1,12 +1,12 @@
 import {addNewTask, data, addNewProject, saveData,
     deleteProject, modifyProjectData, 
 } from "./storage.js";
-import { projectsContainer, handleProjectSelect, refreshContent } from "./UI.js";
+import { projectsContainer, handleProjectSelect, refreshContent, mainBody } from "./UI.js";
 export { renderProjectCard }
 
 const editProjectModal = document.getElementById("edit-project-modal");
-const editProjectCloseBtn = document.getElementById("edit-p-close");
-const editProjectForm = document.getElementById("edit-p-form")
+
+
 
 function renderProjectCard(index) {
     const currentProject = data.projects[index];
@@ -16,6 +16,7 @@ function renderProjectCard(index) {
     const newCard = document.createElement("button");
     newCard.classList.add("project-card");
     projectsContainer.appendChild(newCard);
+    newCard.id = projectID;
 
     const newTitle = document.createElement("h3");
     newTitle.classList.add("project-title");
@@ -28,6 +29,7 @@ function renderProjectCard(index) {
 
     const newModifyBtn = document.createElement("button");
     newModifyBtn.classList.add ("modify-btn");
+    newModifyBtn.id = projectID;
     buttonDiv.appendChild(newModifyBtn);
 
 
@@ -37,32 +39,40 @@ function renderProjectCard(index) {
 
     newDeleteBtn.addEventListener("click", () => deleteProject(projectID));
     newModifyBtn.addEventListener("click", function () {
-        editProjectModal.showModal();
+        editProjectModal.className = projectID;
+        editProject();
     })
     newCard.addEventListener("click", () => handleProjectSelect(newCard));
-    addProjectButtonEvents(index);
 }
 
-function addProjectButtonEvents(index) {
-    const currentProject = data.projects[index];
-    const projectID = currentProject.id;
-    const newTitle = editProjectForm.elements['edit-p-title'].value;
+
+function editProject() {
+    const submitBtn = document.getElementById("edit-p-submit")
+    const editProjectCloseBtn = document.getElementById("edit-p-close");
+    const editProjectForm = document.getElementById("edit-p-form")
+    const targetProject = data.projects.find(project => project.id === editProjectModal.className)
+
+    editProjectForm.elements['edit-p-title'].value = ""
+    editProjectForm.elements['edit-p-title'].placeholder = targetProject.title;
+
+
 
     editProjectCloseBtn.addEventListener("click", function (e) {
-    e.preventDefault();
-    editProjectModal.close();
+        e.preventDefault();
+        editProjectModal.close();
+        mainBody.classList.remove("blurred");
     })
-
-    editProjectForm.elements['edit-p-title'].value = "";
-    editProjectForm.elements['edit-p-title'].placeholder = currentProject.title;
 
     editProjectForm.addEventListener("submit", function (e) {
         e.preventDefault();
-        modifyProjectData(projectID, newTitle);
+        modifyProjectData(editProjectModal.className)
         editProjectModal.close();
-    });
+        mainBody.classList.remove("blurred");
+    })
 
 
 
+    editProjectModal.showModal();
+    mainBody.classList.add("blurred");
 }
 

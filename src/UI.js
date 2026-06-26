@@ -5,7 +5,7 @@ import { renderProjectCard } from "./cards.js";
 import "./UIStyles.css"
 import "./sidebar-styles.css"
 export {refreshContent, addButtonEvents, handleProjectSelect};
-export {projectsContainer};
+export {projectsContainer, mainBody};
 
 const menuBtn = document.getElementById("menu-btn")
 const allBtn = document.getElementById("all-btn")
@@ -13,6 +13,7 @@ const todayBtn = document.getElementById("today-btn");
 const weekBtn = document.getElementById("week-btn");
 const importantBtn = document.getElementById("important-btn")
 const completedBtn = document.getElementById("completed-btn")
+const mainBody = document.getElementById("main-body");
 
 
 allBtn.addEventListener("click", () => handleNavButton("all"));
@@ -42,6 +43,8 @@ function displayProjects() {
     newProjectBtn.classList.add("project-card", "new-project-btn");
     newProjectBtn.addEventListener("click", function () {
     newProjectModal.showModal();
+    mainBody.classList.add("blurred");
+    newProjectForm.elements['p-title'].value = "";
     })
 }
 
@@ -131,31 +134,28 @@ const newProjectModal = document.getElementById("project-modal");
 const newProjectCloseBtn = document.getElementById("p-close");
 const newProjectForm = document.getElementById("p-form");
 
-const editProjectModal = document.getElementById("edit-project-modal");
-const editProjectCloseBtn = document.getElementById("edit-p-close");
-const editProjectForm = document.getElementById("edit-p-form")
-
-
 function addButtonEvents() {
     newProjectCloseBtn.addEventListener("click", function (e) {
     e.preventDefault();
     newProjectModal.close();
+    mainBody.classList.remove("blurred");
     })
 
     newProjectForm.addEventListener("submit", submitProject);
 
     newTaskBtn.addEventListener("click", function () {
         newTaskModal.showModal();
+        mainBody.classList.add("blurred");
     })
 
     newTaskCloseBtn.addEventListener("click", function (e) {
         e.preventDefault();
-        newTaskModal.close();
+        mainBody.classList.remove("blurred");
     })
 
     newTaskForm.addEventListener("submit", submitTask);
 
-    
+
 
 }
 
@@ -170,6 +170,7 @@ function submitProject(e) {
     addNewProject(title);
     refreshContent();
     newProjectModal.close();
+    mainBody.classList.remove("blurred");
 }
 
 function submitTask(e) {
@@ -188,6 +189,7 @@ function submitTask(e) {
     addNewTask(title, projectID, description, dueDate);
     refreshContent();
     newTaskModal.close();
+    mainBody.classList.remove("blurred");
 
 }
 

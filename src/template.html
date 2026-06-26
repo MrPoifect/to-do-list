@@ -6,85 +6,87 @@
     <title>Template</title>
 </head>
 <body>
-    <div id="ui-container">
-        <header id="header"><button id="menu-btn"></button><h1>ToDo</h1></header>
-        <div id="content-container">
-            <div id="side-bar" class="opened">
-                <div id="side-bar-nav">
-                    <button class="nav-button nav all" id="all-btn">
-                        <img class="nav-img nav all" src="./imgs/calendar-month.svg">
-                        <p class="nav-text nav all">All</p>
-                    </button>
-                    <button class="nav-button nav today" id="today-btn">
-                        <img class="nav-img nav today" src="./imgs/calendar-today.svg">
-                        <p class="nav-text nav today">Today</p>
-                    </button>
-                    <button class="nav-button nav week" id="week-btn">
-                        <img class="nav-img nav week" src="./imgs/calendar-week.svg">
-                        <p class="nav-text nav week">Week</p>
-                    </button>
-                    <button class="nav-button nav important" id="important-btn">
-                        <img class="nav-img nav important" src="./imgs/star.svg">
-                        <p class="nav-text nav important">Important</p>
-                    </button>
-                    <button class="nav-button nav completed" id="completed-btn">
-                        <img class="nav-img nav completed" src="./imgs/calendar-check.svg">
-                        <p class="nav-text nav completed">Completed</p>
-                    </button>
-                </div>
-                <div id="side-bar-projects">
-                    <p>Projects</p>
-                    <div id="projects-container">
-
+    <div id="main-body">
+        <div id="ui-container">
+            <header id="header"><button id="menu-btn"></button><h1>ToDo</h1></header>
+            <div id="content-container">
+                <div id="side-bar" class="opened">
+                    <div id="side-bar-nav">
+                        <button class="nav-button nav all" id="all-btn">
+                            <img class="nav-img nav all" src="./imgs/calendar-month.svg">
+                            <p class="nav-text nav all">All</p>
+                        </button>
+                        <button class="nav-button nav today" id="today-btn">
+                            <img class="nav-img nav today" src="./imgs/calendar-today.svg">
+                            <p class="nav-text nav today">Today</p>
+                        </button>
+                        <button class="nav-button nav week" id="week-btn">
+                            <img class="nav-img nav week" src="./imgs/calendar-week.svg">
+                            <p class="nav-text nav week">Week</p>
+                        </button>
+                        <button class="nav-button nav important" id="important-btn">
+                            <img class="nav-img nav important" src="./imgs/star.svg">
+                            <p class="nav-text nav important">Important</p>
+                        </button>
+                        <button class="nav-button nav completed" id="completed-btn">
+                            <img class="nav-img nav completed" src="./imgs/calendar-check.svg">
+                            <p class="nav-text nav completed">Completed</p>
+                        </button>
+                    </div>
+                    <div id="side-bar-projects">
+                        <p>Projects</p>
+                        <div id="projects-container">
+                        </div>
                     </div>
                 </div>
-            </div>
-            <div id="tasks-container">
-                <div id="tasks-content"><p>This is tasks content</p></div>
+                <div id="tasks-container">
+                    <div id="tasks-content"><p>This is tasks content</p></div>
+                </div>
             </div>
         </div>
+        <dialog id="project-modal">
+            <form id="p-form">
+                <h3>New Project</h3>
+                <label for="p-title">Title</label>
+                <input type="text" id="p-title" name="p-title" required/>
+                <div>
+                    <button id="p-close">Cancel</button>
+                    <button id="p-submit" type="submit">Add</button>
+        
+                </div>
+            </form>
+        </dialog>
+            <dialog id="edit-project-modal">
+            <form id="edit-p-form">
+                <h3>Edit Project</h3>
+                <label for="edit-p-title">Title</label>
+                <input type="text" id="edit-p-title" name="edit-p-title" required/>
+                <div>
+                    <button id="edit-p-close">Cancel</button>
+                    <button id="edit-p-submit" type="submit">Add</button>
+                </div>
+            </form>
+        </dialog>
+        
+        <dialog id="task-modal">
+            <form id="t-form">
+                <label for="t-title">Title</label>
+                <input type="text" id="t-title" name="t-title" required/>
+                <label for="t-description">Description</label>
+                <input type="text" id="t-description" name="t-description"/>
+        
+        
+                <label for="project-list">Project:</label>
+                <select name="project-list" id="project-list"></select>
+                <label for="due-date">Due Date:</label>
+                <input type="date" name="due-date" id="due-date">
+                <div>
+                    <button id="t-close">Close</button>
+                    <button id="t-submit" type="submit">Add</button>
+                </div>
+            </form>
+        </dialog>
     </div>
-   <!-- <Button id="new-project">New Project</Button>
-    <button id="new-task">New task</button> -->
-    <dialog id="project-modal">
-        <form id="p-form">
-            <div>New Project</div>
-            <label for="p-title">Project Name</label>
-            <input type="text" id="p-title" name="p-title"/>
-            <button id="p-submit" type="submit">Submit</button>
-            <button id="p-close">Close</button>
-        </form>
-    </dialog>
 
-        <dialog id="edit-project-modal">
-        <form id="edit-p-form">
-            <div>Edit Project</div>
-            <label for="edit-p-title">Project Name</label>
-            <input type="text" id="edit-p-title" name="p-title"/>
-            <button id="edit-p-submit" type="submit">Submit</button>
-            <button id="edit-p-close">Close</button>
-        </form>
-    </dialog>
-    
-    <dialog id="task-modal">
-        <form id="t-form">
-            <label for="t-title">Title:</label>
-            <input type="text" id="t-title" name="t-title"/>
-            <label for="t-description">Description</label>
-            <input type="text" id="t-description" name="t-description"/>
-            
-            
-            <label for="project-list">Project:</label>
-            <select name="project-list" id="project-list"></select>                 
-            <label for="due-date">Due Date:</label>
-            <input type="date" name="due-date" id="due-date">
-            <button id="t-submit" type="submit">Submit</button>
-            <button id="t-close">Close</button>
-
-        </form>
-    </dialog>
-
-    <!--<div id="projects-container"></div>
-    <div id="tasks-container"></div> -->
 </body>
 </html>
