@@ -1,7 +1,6 @@
 #side-bar { 
-    height: 100vh -60px;
+    height: 100%;
     grid-column: 1 / 2;
-    overflow: hidden;
     background-color:rgb(179, 194, 197);
     overflow-y: auto;
 }
