@@ -1,6 +1,4 @@
-import {addNewTask, data, addNewProject, saveData,
-    deleteProject, modifyProjectData, 
-} from "./storage.js";
+import { storageController, data } from "./storage.js";
 import { projectsContainer, uiController, mainBody } from "./UI.js";
 export { renderProjectCard }
 
@@ -37,7 +35,7 @@ function renderProjectCard(index) {
     newDeleteBtn.classList.add ("delete-btn")
     buttonDiv.appendChild(newDeleteBtn);
 
-    newDeleteBtn.addEventListener("click", () => deleteProject(projectID));
+    newDeleteBtn.addEventListener("click", () => storageController.deleteProject(projectID));
     newModifyBtn.addEventListener("click", function () {
         editProjectModal.className = projectID;
         editProject();
@@ -65,7 +63,7 @@ function editProject() {
 
     editProjectForm.addEventListener("submit", function (e) {
         e.preventDefault();
-        modifyProjectData(editProjectModal.className)
+        storageController.modifyProjectData(editProjectModal.className)
         editProjectModal.close();
         mainBody.classList.remove("blurred");
     })

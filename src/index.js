@@ -1,12 +1,12 @@
 
 
 import { uiController} from "./UI.js";
-import { loadData } from "./storage.js";
+import { storageController } from "./storage.js";
 import "./UIStyles.css"
 import "./sidebar-styles.css"
 
 
-loadData();
+storageController.loadData();
 uiController.refreshContent();
 uiController.addModalEvents();
 

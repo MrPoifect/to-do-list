@@ -1,5 +1,4 @@
-import {addNewTask, data, addNewProject, saveData,
-    deleteProject
+import {storageController, data,
 } from "./storage.js";
 import { renderProjectCard } from "./cards.js";
 import "./UIStyles.css"
@@ -77,7 +76,6 @@ const uiController = (() => {
         target.classList.add("selected")
     };
 
-
     function addModalEvents() {
         newProjectCloseBtn.addEventListener("click", function (e) {
         e.preventDefault();
@@ -85,7 +83,7 @@ const uiController = (() => {
         mainBody.classList.remove("blurred");
         })
 
-        newProjectForm.addEventListener("submit", submitProject);
+        newProjectForm.addEventListener("submit", dataController.submitProject);
 
         newTaskCloseBtn.addEventListener("click", function (e) {
             e.preventDefault();
@@ -151,8 +149,31 @@ const uiController = (() => {
     return {addNavButtons, refreshContent, addModalEvents, highlightProjectSelect}
 })();
 
+
 const dataController = (() => {
 
+    function submitProject(e) {
+        e.preventDefault();
+
+        const title = document.getElementById("p-form").elements['p-title'].value;
+
+        storageController.addNewProject(title);
+        uiController.refreshContent();
+        newProjectModal.close();
+        mainBody.classList.remove("blurred");
+    }
+
+    function deleteTask(UUID) {
+    const targetTask = data.tasks.find(task => task.id === UUID)
+    const index = data.tasks.indexOf(targetTask)
+    data.tasks.splice(index, 1)
+    storageController.saveData();
+    uiController.refreshContent();
+}
+
+
+
+return {submitProject, deleteTask,}
 })();
 
 
@@ -208,16 +229,7 @@ function adjustMenuForScreen() {
 
 
 
-function submitProject(e) {
-    e.preventDefault();
 
-    const title = document.getElementById("p-form").elements['p-title'].value;
-
-    addNewProject(title);
-    uiController.refreshContent();
-    newProjectModal.close();
-    mainBody.classList.remove("blurred");
-}
 
 function submitTask(e) {
     e.preventDefault();
@@ -232,8 +244,8 @@ function submitTask(e) {
 
     
 
-    addNewTask(title, projectID, description, dueDate);
-    refreshContent();
+    storageController.addNewTask(title, projectID, description, dueDate);
+    uiController.refreshContent();
     newTaskModal.close();
     mainBody.classList.remove("blurred");
 
@@ -241,20 +253,6 @@ function submitTask(e) {
 
 
 
-function deleteTask(UUID) {
-    const targetTask = data.tasks.find(task => task.id === UUID)
-    const index = data.tasks.indexOf(targetTask)
-    data.tasks.splice(index, 1)
-    saveData();
-    uiController.refreshContent();
-}
 
 
-
-
-//highlight selected project
-
-
-
-    
 
