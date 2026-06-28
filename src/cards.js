@@ -1,12 +1,47 @@
 import { storageController, data } from "./storage.js";
 import { projectsContainer, uiController, mainBody } from "./UI.js";
-export { renderProjectCard }
+export { cardRenderController }
 
 const editProjectModal = document.getElementById("edit-project-modal");
 
 
 
-function renderProjectCard(index) {
+
+
+
+function editProject() {
+    const submitBtn = document.getElementById("edit-p-submit")
+    const editProjectCloseBtn = document.getElementById("edit-p-close");
+    const editProjectForm = document.getElementById("edit-p-form")
+    const targetProject = data.projects.find(project => project.id === editProjectModal.className)
+
+    editProjectForm.elements['edit-p-title'].value = ""
+    editProjectForm.elements['edit-p-title'].placeholder = targetProject.title;
+
+
+
+    editProjectCloseBtn.addEventListener("click", function (e) {
+        e.preventDefault();
+        editProjectModal.close();
+        mainBody.classList.remove("blurred");
+    })
+
+    editProjectForm.addEventListener("submit", function (e) {
+        e.preventDefault();
+        storageController.modifyProjectData(editProjectModal.className)
+        editProjectModal.close();
+        mainBody.classList.remove("blurred");
+    })
+
+
+
+    editProjectModal.showModal();
+    mainBody.classList.add("blurred");
+}
+
+const cardRenderController = (() => {
+
+    function renderProjectCard(index) {
     const currentProject = data.projects[index];
     const projectID = currentProject.id;
 
@@ -41,36 +76,13 @@ function renderProjectCard(index) {
         editProject();
     })
     newCard.addEventListener("click", () => uiController.highlightProjectSelect(newCard));
-}
+    }
+
+    function renderAllTasks() {
+
+    }
 
 
-function editProject() {
-    const submitBtn = document.getElementById("edit-p-submit")
-    const editProjectCloseBtn = document.getElementById("edit-p-close");
-    const editProjectForm = document.getElementById("edit-p-form")
-    const targetProject = data.projects.find(project => project.id === editProjectModal.className)
-
-    editProjectForm.elements['edit-p-title'].value = ""
-    editProjectForm.elements['edit-p-title'].placeholder = targetProject.title;
-
-
-
-    editProjectCloseBtn.addEventListener("click", function (e) {
-        e.preventDefault();
-        editProjectModal.close();
-        mainBody.classList.remove("blurred");
-    })
-
-    editProjectForm.addEventListener("submit", function (e) {
-        e.preventDefault();
-        storageController.modifyProjectData(editProjectModal.className)
-        editProjectModal.close();
-        mainBody.classList.remove("blurred");
-    })
-
-
-
-    editProjectModal.showModal();
-    mainBody.classList.add("blurred");
-}
+    return {renderProjectCard}
+})();
 

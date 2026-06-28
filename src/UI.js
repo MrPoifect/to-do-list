@@ -1,6 +1,5 @@
-import {storageController, data,
-} from "./storage.js";
-import { renderProjectCard } from "./cards.js";
+import { storageController, data } from "./storage.js";
+import { cardRenderController } from "./cards.js";
 import "./UIStyles.css"
 import "./sidebar-styles.css"
 export {projectsContainer, mainBody, uiController, dataController};
@@ -126,7 +125,7 @@ const uiController = (() => {
         projectsContainer.innerHTML = "";
 
         for (let i = 0; i < data.projects.length; i++) {
-            renderProjectCard(i);
+            cardRenderController.renderProjectCard(i);
         };
         const newProjectBtn = document.createElement("button");
         projectsContainer.appendChild(newProjectBtn);
@@ -164,16 +163,16 @@ const dataController = (() => {
     }
 
     function deleteTask(UUID) {
-    const targetTask = data.tasks.find(task => task.id === UUID)
-    const index = data.tasks.indexOf(targetTask)
-    data.tasks.splice(index, 1)
-    storageController.saveData();
-    uiController.refreshContent();
-}
+        const targetTask = data.tasks.find(task => task.id === UUID)
+        const index = data.tasks.indexOf(targetTask)
+        data.tasks.splice(index, 1)
+        storageController.saveData();
+        uiController.refreshContent();
+    }
 
 
 
-return {submitProject, deleteTask,}
+    return {submitProject, deleteTask,}
 })();
 
 
