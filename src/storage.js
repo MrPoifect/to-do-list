@@ -1,4 +1,4 @@
-import { refreshContent } from "./UI.js";
+import { uiController } from "./UI.js";
 
 export {data};
 export { addNewProject, deleteProject, 
@@ -74,7 +74,7 @@ function deleteProject(UUID) {
     const projectIndex = data.projects.indexOf(targetProject);
     data.projects.splice(projectIndex, 1);
     saveData();
-    refreshContent();
+    uiController.refreshContent();
 }
 
 function modifyProjectData(UUID) {
@@ -85,7 +85,7 @@ function modifyProjectData(UUID) {
     targetProject.title = title
     console.log(UUID);
     saveData();
-    refreshContent();
+    uiController.refreshContent();
 }
 
 function openProject(UUID) {

@@ -1,7 +1,7 @@
 import {addNewTask, data, addNewProject, saveData,
     deleteProject, modifyProjectData, 
 } from "./storage.js";
-import { projectsContainer, handleProjectSelect, refreshContent, mainBody } from "./UI.js";
+import { projectsContainer, uiController, mainBody } from "./UI.js";
 export { renderProjectCard }
 
 const editProjectModal = document.getElementById("edit-project-modal");
@@ -42,7 +42,7 @@ function renderProjectCard(index) {
         editProjectModal.className = projectID;
         editProject();
     })
-    newCard.addEventListener("click", () => handleProjectSelect(newCard));
+    newCard.addEventListener("click", () => uiController.highlightProjectSelect(newCard));
 }
 
 
