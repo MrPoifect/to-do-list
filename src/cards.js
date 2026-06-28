@@ -1,6 +1,6 @@
 import { storageController, data } from "./storage.js";
 import { projectsContainer, uiController, mainBody } from "./UI.js";
-export { cardRenderController }
+export { cardCreator }
 
 const editProjectModal = document.getElementById("edit-project-modal");
 
@@ -39,7 +39,7 @@ function editProject() {
     mainBody.classList.add("blurred");
 }
 
-const cardRenderController = (() => {
+const cardCreator = (() => {
 
     function renderProjectCard(index) {
     const currentProject = data.projects[index];
@@ -79,6 +79,26 @@ const cardRenderController = (() => {
     }
 
     function renderAllTasks() {
+
+    }
+
+    function renderTodayTasks() {
+
+    }
+
+    function renderWeekTasks() {
+
+    }
+
+    function renderImportantTasks() {
+
+    }
+
+    function renderCompleteTasks() {
+        
+    }
+
+    function renderProjectTasks() {
 
     }
 

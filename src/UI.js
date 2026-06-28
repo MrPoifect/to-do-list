@@ -1,5 +1,5 @@
 import { storageController, data } from "./storage.js";
-import { cardRenderController } from "./cards.js";
+import { cardCreator } from "./cards.js";
 import "./UIStyles.css"
 import "./sidebar-styles.css"
 export {projectsContainer, mainBody, uiController, dataController};
@@ -125,7 +125,7 @@ const uiController = (() => {
         projectsContainer.innerHTML = "";
 
         for (let i = 0; i < data.projects.length; i++) {
-            cardRenderController.renderProjectCard(i);
+            cardCreator.renderProjectCard(i);
         };
         const newProjectBtn = document.createElement("button");
         projectsContainer.appendChild(newProjectBtn);
