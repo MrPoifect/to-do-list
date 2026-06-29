@@ -2,7 +2,8 @@ import { storageController, data } from "./storage.js";
 import { cardCreator } from "./cards.js";
 import "./UIStyles.css"
 import "./sidebar-styles.css"
-export {projectsContainer, mainBody, uiController, dataController};
+import { format, isToday, differenceInCalendarDays } from "date-fns";
+export {projectsContainer, mainBody, uiController, dataInterface};
 
 const menuBtn = document.getElementById("menu-btn")
 const allBtn = document.getElementById("all-btn")
@@ -26,10 +27,30 @@ adjustMenuForScreen();
 const uiController = (() => {
 
     const addNavButtons = () => {
-        allBtn.addEventListener("click", () => highlightNavButton("all"));
-        todayBtn.addEventListener("click", () => highlightNavButton("today"));
-        weekBtn.addEventListener("click", () => highlightNavButton("week"));
-        importantBtn.addEventListener("click", () => highlightNavButton("important"));
+        allBtn.addEventListener("click", function (e) {
+            highlightNavButton("all");
+            dataInterface.openAllTasks();
+            adjustMenuForScreen();
+        });
+        
+        todayBtn.addEventListener("click", function (e) { 
+            highlightNavButton("today")
+            dataInterface.openTodayTasks();
+            adjustMenuForScreen();
+        });
+
+        weekBtn.addEventListener("click", function (e) {
+            highlightNavButton("week")
+            dataInterface.openWeekTasks();
+            adjustMenuForScreen();
+        });
+
+        importantBtn.addEventListener("click", function () {
+            highlightNavButton("important")
+            dataInterface.openImportantTasks();
+            adjustMenuForScreen();
+        });
+
         completedBtn.addEventListener("click", () => highlightNavButton("completed"));
         menuBtn.addEventListener("click", toggleMenu);
     }
@@ -56,7 +77,7 @@ const uiController = (() => {
         }
     };
 
-    function highlightProjectSelect(target) {
+    function highlightProjectSelect(UUID) {
 
         const allProjectCards = document.getElementsByClassName("project-card");
         const allNavElements = document.getElementsByClassName("nav");
@@ -71,8 +92,9 @@ const uiController = (() => {
                 allProjectCards[i].classList.remove("selected")
             }
         }
+        const projectCard = document.getElementById(UUID)
 
-        target.classList.add("selected")
+        projectCard.classList.add("selected")
     };
 
     function addModalEvents() {
@@ -82,14 +104,15 @@ const uiController = (() => {
         mainBody.classList.remove("blurred");
         })
 
-        newProjectForm.addEventListener("submit", dataController.submitProject);
+        newProjectForm.addEventListener("submit", dataInterface.submitProject);
 
         newTaskCloseBtn.addEventListener("click", function (e) {
             e.preventDefault();
             mainBody.classList.remove("blurred");
+            newTaskModal.close();
         })
 
-        newTaskForm.addEventListener("submit", submitTask);
+        newTaskForm.addEventListener("submit", dataInterface.submitTask);
     }
 
     function toggleMenu() {
@@ -110,7 +133,7 @@ const uiController = (() => {
         }
     }
 
-    function updateProjectList() {
+/*    function updateProjectList() {
         const projectList = document.getElementById("project-list");
         projectList.innerHTML = "";
         for (let i = 0; i < data.projects.length; i++) {
@@ -119,7 +142,7 @@ const uiController = (() => {
             newOption.innerHTML = data.projects[i].title;
             projectList.add(newOption);
         }
-    }
+    }*/
 
     function displayProjects() {
         projectsContainer.innerHTML = "";
@@ -140,16 +163,31 @@ const uiController = (() => {
 
     function refreshContent() {
         displayProjects();
-        updateProjectList();
     }
+
+    function addNewTaskButton(targetProjectID) {
+        const tasksContainer = document.getElementById("tasks-content")
+
+        const addTaskBtn = document.createElement("button");
+        addTaskBtn.classList.add("new-task-btn")
+        addTaskBtn.textContent = "New Task +"
+        tasksContainer.appendChild(addTaskBtn)
+
+        addTaskBtn.addEventListener("click", () => { 
+            newTaskModal.showModal();
+            newTaskModal.classList.add(targetProjectID);
+            mainBody.classList.add("blurred"); }
+        );
+    }
+
 
     
     addNavButtons();
-    return {addNavButtons, refreshContent, addModalEvents, highlightProjectSelect}
+    return {addNavButtons, refreshContent, addModalEvents, highlightProjectSelect, addNewTaskButton}
 })();
 
 
-const dataController = (() => {
+const dataInterface = (() => {
 
     function submitProject(e) {
         e.preventDefault();
@@ -162,58 +200,127 @@ const dataController = (() => {
         mainBody.classList.remove("blurred");
     }
 
-    function deleteTask(UUID) {
-        const targetTask = data.tasks.find(task => task.id === UUID)
-        const index = data.tasks.indexOf(targetTask)
-        data.tasks.splice(index, 1)
-        storageController.saveData();
+
+    function openProject(UUID) {
+        const tasksContainer = document.getElementById("tasks-content")
+        const targetProject = data.projects.find(project => project.id === UUID)
+        const targetProjectID = targetProject.id;
+
+
+        const projectTitle = document.createElement("h2");
+        projectTitle.textContent = (targetProject.title + " - " + targetProjectID);
+
+        tasksContainer.innerHTML = ""
+        tasksContainer.append(projectTitle);
+        uiController.addNewTaskButton(targetProjectID);
+        adjustMenuForScreen();
+        for (let i = 0; i < data.tasks.length; i++) {
+            if (data.tasks[i].projectId === targetProjectID) {
+                cardCreator.renderTaskCard(i);
+
+            }
+        }
+        uiController.highlightProjectSelect(UUID);
+    }
+
+    function openAllTasks() {
+        const tasksContainer = document.getElementById("tasks-content");
+        const projectTitle = document.createElement("h2");
+        projectTitle.textContent = "All Tasks";
+
+        tasksContainer.innerHTML = ""
+        tasksContainer.append(projectTitle);
+        for (let i = 0 ; i < data.tasks.length; i++) {
+            cardCreator.renderTaskCard(i);
+        }
+    }
+
+    function submitTask(e) {
+        e.preventDefault();
+
+        const form = document.getElementById("t-form")
+
+        const title = form.elements['t-title'].value;
+        const description = form.elements['t-description'].value;
+        const projectID = newTaskModal.className;
+        const dueDate = form.elements['due-date'].value;
+        const isImportant = document.getElementById("importance").checked;
+
+        
+
+        storageController.addNewTask(title, projectID, description, dueDate, isImportant);
         uiController.refreshContent();
+        openProject(projectID);
+        newTaskModal.classList.remove(projectID);
+        newTaskModal.close();
+        mainBody.classList.remove("blurred");
+
+    }
+
+    function openTodayTasks() {
+        const todaysDate = format(new Date(), "yyyy-MM-dd");
+        const tasksContainer = document.getElementById("tasks-content");
+        const projectTitle = document.createElement("h2");
+        projectTitle.textContent = "Due Today";
+
+        tasksContainer.innerHTML = ""
+        tasksContainer.append(projectTitle);
+        for (let i = 0 ; i < data.tasks.length; i++) {
+            if (isToday(data.tasks[i].dueDate))
+                {cardCreator.renderTaskCard(i);
+                };
+        }
+
+    }
+
+    function openWeekTasks() {
+        const todaysDate = format(new Date(), "yyyy-MM-dd");
+        const tasksContainer = document.getElementById("tasks-content");
+        const projectTitle = document.createElement("h2");
+        projectTitle.textContent = "Due by next week";
+
+        tasksContainer.innerHTML = ""
+        tasksContainer.append(projectTitle);
+        for (let i = 0 ; i < data.tasks.length; i++) {
+            if (differenceInCalendarDays(data.tasks[i].dueDate, todaysDate) <= 7){
+                cardCreator.renderTaskCard(i);
+            }
+        }
+    }
+
+    function openImportantTasks() {
+        const tasksContainer = document.getElementById("tasks-content");
+        const projectTitle = document.createElement("h2");
+        projectTitle.textContent = "Important";
+
+        tasksContainer.innerHTML = ""
+        tasksContainer.append(projectTitle);
+        for (let i = 0 ; i < data.tasks.length; i++) {
+            if (data.tasks[i].important){
+                cardCreator.renderTaskCard(i);
+            }
+        }
+    }
+
+    function toggleTaskImportance(UUID, btn) {
+        const targetTask = data.tasks.find(task => task.id === UUID)
+
+        if (targetTask.important) {
+            targetTask.important = false;
+            btn.classList.remove("true");
+        } else { 
+            targetTask.important = true
+            btn.classList.add("true");
+            };
     }
 
 
-
-    return {submitProject, deleteTask,}
+    return {submitProject, openProject, submitTask, 
+        openAllTasks, openTodayTasks, openWeekTasks, openImportantTasks, toggleTaskImportance}
 })();
 
 
 
-
-
-
-function displayTasks() {
-    document.getElementById("tasks-container").innerHTML = "";
-
-    for (let i = 0; i < data.tasks.length; i++) {
-        const currentTask = data.tasks[i];
-        const taskID = currentTask.id;
-        const projectID = currentTask.projectId;
-
-        const tasksContainer = document.getElementById("tasks-container");
-        const newCard = document.createElement("div");
-        newCard.classList.add("task-card");
-        tasksContainer.appendChild(newCard);
-
-        const newTitle = document.createElement("h3");
-        newTitle.classList.add("task-title");
-        newTitle.textContent = currentTask.title;
-        newCard.appendChild(newTitle);
-
-        const newID = document.createElement("p");
-        newID.textContent = ("Task ID: " + taskID)
-        newCard.appendChild(newID);
-
-        const newProjectID = document.createElement("p");
-        newProjectID.textContent = ("Project ID: " + projectID)
-        newCard.appendChild(newProjectID);
-
-        const newDeleteBtn = document.createElement("button");
-        newDeleteBtn.textContent = "Delete"
-        newCard.appendChild(newDeleteBtn);
-
-        newDeleteBtn.addEventListener("click", () => deleteTask(taskID));
-
-    };
-}
 
 
 function adjustMenuForScreen() {
@@ -230,25 +337,7 @@ function adjustMenuForScreen() {
 
 
 
-function submitTask(e) {
-    e.preventDefault();
 
-    const form = document.getElementById("t-form")
-
-    const title = form.elements['t-title'].value;
-    const description = form.elements['t-description'].value;
-    const projectIndex = form.elements['project-list'].value;
-    const projectID = data.projects[projectIndex].id;
-    const dueDate = form.elements['due-date'].value;
-
-    
-
-    storageController.addNewTask(title, projectID, description, dueDate);
-    uiController.refreshContent();
-    newTaskModal.close();
-    mainBody.classList.remove("blurred");
-
-}
 
 
 

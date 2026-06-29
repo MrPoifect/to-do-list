@@ -144,7 +144,20 @@ dialog > form > div > button {
 
 
 
+#tasks-container {
 
+}
+
+#tasks-content {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: flex-start;
+}
+
+.true {
+    background-color: goldenrod;
+}
 
 
 

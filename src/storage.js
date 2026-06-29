@@ -1,8 +1,7 @@
-import { uiController } from "./UI.js";
+import { dataInterface, uiController,} from "./UI.js";
 
 export {data};
 export { storageController };
-export { openProject};
 
 
 
@@ -15,42 +14,53 @@ const data = {
 const storageController = (() => {
 
     function addNewProject(title) {
-    const UUID = crypto.randomUUID()
+        const UUID = crypto.randomUUID()
 
-    data.projects.push(new Project(title, UUID));
-    saveData();
-    };
+        data.projects.push(new Project(title, UUID));
+        saveData();
+        uiController.refreshContent(); 
+        dataInterface.openProject(UUID);
+        };
 
     function modifyProjectData(UUID) {
 
-    const targetProject = data.projects.find(project => project.id === UUID)
-    const title = document.getElementById("edit-p-form").elements['edit-p-title'].value;
+        const targetProject = data.projects.find(project => project.id === UUID)
+        const title = document.getElementById("edit-p-form").elements['edit-p-title'].value;
 
-    targetProject.title = title
-    console.log(UUID);
-    saveData();
-    uiController.refreshContent();
+        targetProject.title = title
+        console.log(UUID);
+        saveData();
+        uiController.refreshContent();
 }
 
     function deleteProject(UUID) {
-    //delete all child tasks first
-    for (let i = data.tasks.length - 1; i >= 0; i--) { 
-        if (data.tasks[i].projectId === UUID) {
-            data.tasks.splice(i, 1);
+        //delete all child tasks first
+        for (let i = data.tasks.length - 1; i >= 0; i--) { 
+            if (data.tasks[i].projectId === UUID) {
+                data.tasks.splice(i, 1);
+            }
         }
+        const targetProject = data.projects.find(project => project.id === UUID)
+        const projectIndex = data.projects.indexOf(targetProject);
+        data.projects.splice(projectIndex, 1);
+        saveData();
+        uiController.refreshContent();
+        dataInterface.openAllTasks();
     }
-    const targetProject = data.projects.find(project => project.id === UUID)
-    const projectIndex = data.projects.indexOf(targetProject);
-    data.projects.splice(projectIndex, 1);
-    saveData();
-    uiController.refreshContent();
-}
 
-    function addNewTask(title, projectId, description, dueDate) {
+    function addNewTask(title, projectId, description, dueDate, important) {
         const UUID = crypto.randomUUID();
 
-        data.tasks.push(new Task(title, UUID, projectId, description, dueDate));
+        data.tasks.push(new Task(title, UUID, projectId, description, dueDate, important));
         saveData();
+    }
+
+    function deleteTask(UUID) {
+        const targetTask = data.tasks.find(task => task.id === UUID)
+        const taskIndex = data.tasks.indexOf(targetTask);
+        data.tasks.splice(taskIndex, 1);
+        saveData();
+        uiController.refreshContent();
     }
 
     function saveData() {
@@ -66,7 +76,7 @@ const storageController = (() => {
 }
 
 
-return {addNewProject, modifyProjectData, deleteProject, addNewTask, loadData}
+return {addNewProject, modifyProjectData, deleteProject, addNewTask, loadData, deleteTask}
 })();
 
 
@@ -78,7 +88,7 @@ function Project(title, id) {
     this.id = id;
 }
 
-function Task(title, id, projectId, description, dueDate) {
+function Task(title, id, projectId, description, dueDate, important) {
     if (!new.target) {
         throw Error("Must use 'new' operator")
     }
@@ -87,6 +97,7 @@ function Task(title, id, projectId, description, dueDate) {
     this.projectId = projectId;
     this.description = description;
     this.dueDate = dueDate;
+    this.important = important;
 }
 
 
@@ -105,7 +116,3 @@ function Task(title, id, projectId, description, dueDate) {
 
 
 
-
-function openProject(UUID) {
-
-}
