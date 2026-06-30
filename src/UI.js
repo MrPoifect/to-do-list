@@ -6,19 +6,18 @@ import { format, isToday, differenceInCalendarDays } from "date-fns";
 export {projectsContainer, mainBody, uiController, dataInterface};
 
 const menuBtn = document.getElementById("menu-btn")
-const allBtn = document.getElementById("all-btn")
-const todayBtn = document.getElementById("today-btn");
-const weekBtn = document.getElementById("week-btn");
-const importantBtn = document.getElementById("important-btn")
-const completedBtn = document.getElementById("completed-btn")
+
+
+
 const mainBody = document.getElementById("main-body");
 const projectsContainer = document.getElementById("projects-container");
 const newProjectModal = document.getElementById("project-modal");
-const newProjectCloseBtn = document.getElementById("p-close");
 const newProjectForm = document.getElementById("p-form");
 const newTaskModal = document.getElementById("task-modal");
-const newTaskCloseBtn = document.getElementById("t-close");
-const newTaskForm = document.getElementById("t-form");
+
+let currentTab = "all";
+
+
 
 
 adjustMenuForScreen();
@@ -27,28 +26,39 @@ adjustMenuForScreen();
 const uiController = (() => {
 
     const addNavButtons = () => {
+
+        const allBtn = document.getElementById("all-btn")
+        const todayBtn = document.getElementById("today-btn");
+        const weekBtn = document.getElementById("week-btn");
+        const importantBtn = document.getElementById("important-btn")
+        const completedBtn = document.getElementById("completed-btn")
+
         allBtn.addEventListener("click", function (e) {
             highlightNavButton("all");
             dataInterface.openAllTasks();
             adjustMenuForScreen();
+            currentTab = "all"
         });
         
         todayBtn.addEventListener("click", function (e) { 
             highlightNavButton("today")
             dataInterface.openTodayTasks();
             adjustMenuForScreen();
+            currentTab = "today"
         });
 
         weekBtn.addEventListener("click", function (e) {
             highlightNavButton("week")
             dataInterface.openWeekTasks();
             adjustMenuForScreen();
+            currentTab = "week"
         });
 
         importantBtn.addEventListener("click", function () {
             highlightNavButton("important")
             dataInterface.openImportantTasks();
             adjustMenuForScreen();
+            currentTab = "important"
         });
 
         completedBtn.addEventListener("click", () => highlightNavButton("completed"));
@@ -98,6 +108,10 @@ const uiController = (() => {
     };
 
     function addModalEvents() {
+        const newTaskForm = document.getElementById("t-form");
+        const newTaskCloseBtn = document.getElementById("t-close");
+        const newProjectCloseBtn = document.getElementById("p-close");
+
         newProjectCloseBtn.addEventListener("click", function (e) {
         e.preventDefault();
         newProjectModal.close();
@@ -133,17 +147,6 @@ const uiController = (() => {
         }
     }
 
-/*    function updateProjectList() {
-        const projectList = document.getElementById("project-list");
-        projectList.innerHTML = "";
-        for (let i = 0; i < data.projects.length; i++) {
-            const newOption = document.createElement("option");
-            newOption.value = i;
-            newOption.innerHTML = data.projects[i].title;
-            projectList.add(newOption);
-        }
-    }*/
-
     function displayProjects() {
         projectsContainer.innerHTML = "";
 
@@ -163,6 +166,7 @@ const uiController = (() => {
 
     function refreshContent() {
         displayProjects();
+        displayTabTasks(currentTab);
     }
 
     function addNewTaskButton(targetProjectID) {
@@ -178,6 +182,40 @@ const uiController = (() => {
             newTaskModal.classList.add(targetProjectID);
             mainBody.classList.add("blurred"); }
         );
+    }
+
+    function displayTabTasks(tab) {
+        switch (tab) {
+            case "all":
+                    highlightNavButton("all");
+                    dataInterface.openAllTasks();
+                    adjustMenuForScreen();
+                break;
+
+            case "today":
+                    highlightNavButton("today")
+                    dataInterface.openTodayTasks();
+                    adjustMenuForScreen();
+                break;
+
+            case "week":
+                    highlightNavButton("week")
+                    dataInterface.openWeekTasks();
+                    adjustMenuForScreen();
+                break;
+
+            case "important":
+                    highlightNavButton("important")
+                    dataInterface.openImportantTasks();
+                    adjustMenuForScreen();
+                break;
+
+            case "completed":
+
+                break;
+            
+
+        }
     }
 
 
@@ -205,6 +243,8 @@ const dataInterface = (() => {
         const tasksContainer = document.getElementById("tasks-content")
         const targetProject = data.projects.find(project => project.id === UUID)
         const targetProjectID = targetProject.id;
+
+        currentTab = "project";
 
 
         const projectTitle = document.createElement("h2");
@@ -312,15 +352,13 @@ const dataInterface = (() => {
             targetTask.important = true
             btn.classList.add("true");
             };
+        uiController.refreshContent();
     }
 
 
     return {submitProject, openProject, submitTask, 
         openAllTasks, openTodayTasks, openWeekTasks, openImportantTasks, toggleTaskImportance}
 })();
-
-
-
 
 
 function adjustMenuForScreen() {
@@ -330,6 +368,9 @@ function adjustMenuForScreen() {
         menuDiv.classList.add("collapsed")
     };
     }
+
+
+
 
 
 
