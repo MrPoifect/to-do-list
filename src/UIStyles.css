@@ -23,6 +23,14 @@ h1 {
     color: rgb(233, 233, 233);
 }
 
+h2{
+    font-size: 30px;
+    padding: 20px 0px 0px;
+    margin-bottom: 18px;
+    border-bottom: solid 4px;
+    color: rgb(83, 83, 83);
+}
+
 #ui-container {
     display: grid;
     grid-template-columns: auto 1fr;
@@ -127,22 +135,105 @@ dialog > form > div {
 dialog > form > div > button {
     border-radius: 6px;
     padding: 12px 20px;
+    margin-bottom: 20px;
 }
 
+#t-submit,
+#edit-t-submit,
 #p-submit,
 #edit-p-submit{
     background-color: rgb(86, 180, 187);
     border: none;
+
    /* background-image: linear-gradient(to right, rgb(86, 180, 187), rgb(50, 99, 122)); */
 }
 
+#t-close,
+#edit-t-close,
 #p-close,
 #edit-p-close {
     background: none;
     border: 1px solid black;
+
 }
 
 
+
+#task-modal,
+#edit-task-modal {
+    height: fit-content;
+}
+
+#importance {
+
+    width: 20px;
+    height: 20px;
+}
+
+#important-checkbox {
+    display: flex;
+    flex-direction: row;
+    align-self: center;
+    margin: 8px auto 0px 25px;
+}
+
+
+
+#delete-project,
+#delete-task {
+    margin: auto;
+    height: fit-content;
+    min-width: 250px;
+    border: white 2px solid;
+}
+
+#delete-project > div,
+#delete-task > div {
+    height: 75px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 30px;
+    padding: 16px;
+}
+
+#delete-project > div > button,
+#delete-task > div > button {
+    height: 40px;
+    border-radius: 6px;
+    padding: 12px 20px;
+}
+
+dialog > h3  {
+    background-image: linear-gradient(to right, rgb(86, 180, 187), rgb(50, 99, 122));
+    padding: 16px;
+    text-align: center;
+    border-radius: 12px 12px 0px 0px;
+    color: rgb(250, 250, 250);
+}
+
+.delete-q-btn {
+    background-color: rgb(201, 74, 74);
+    color: rgb(255, 255, 255);
+    font-size: 18px;
+    border: none;
+}
+
+
+.cancel-q-btn {
+    background: none;
+    font-size: 18px;
+}
+
+.delete-q-btn > p {
+    position: relative;
+    bottom: 2px;
+}
+
+.cancel-q-btn > p {
+    position: relative;
+    bottom: 4px
+}
 
 
 
@@ -153,6 +244,10 @@ dialog > form > div > button {
 
 
 @media (max-width: 767px){
+
+h2 {
+    font-size: 20px;
+}
 
 .darken {
     opacity: 50%;

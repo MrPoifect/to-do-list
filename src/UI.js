@@ -3,7 +3,7 @@ import { cardCreator } from "./cards.js";
 import "./UIStyles.css"
 import "./sidebar-styles.css"
 import { format, isToday, differenceInCalendarDays } from "date-fns";
-export {projectsContainer, mainBody, uiController, dataInterface};
+export {projectsContainer, mainBody, uiController, dataInterface, currentTab};
 
 const menuBtn = document.getElementById("menu-btn")
 
@@ -176,11 +176,14 @@ const uiController = (() => {
 
     function addNewTaskButton(targetProjectID) {
         const tasksContainer = document.getElementById("tasks-content")
+        const newTaskForm = document.getElementById("t-form");
 
         const addTaskBtn = document.createElement("button");
         addTaskBtn.classList.add("new-task-btn")
         addTaskBtn.textContent = "New Task +"
         tasksContainer.appendChild(addTaskBtn)
+        newTaskForm.elements['t-title'].value = "";
+        newTaskForm.elements['t-description'].value = "";
 
         addTaskBtn.addEventListener("click", () => { 
             newTaskModal.showModal();
@@ -222,13 +225,20 @@ const uiController = (() => {
                 break;
             
 
+            
+
         }
     }
 
 
+
+
+
+
     
     addNavButtons();
-    return {addNavButtons, refreshContent, addModalEvents, highlightProjectSelect, addNewTaskButton}
+    return {addNavButtons, refreshContent, addModalEvents, 
+        highlightProjectSelect, addNewTaskButton, displayTabTasks }
 })();
 
 
@@ -255,7 +265,7 @@ const dataInterface = (() => {
 
 
         const projectTitle = document.createElement("h2");
-        projectTitle.textContent = (targetProject.title + " - " + targetProjectID);
+        projectTitle.textContent = (targetProject.title);
 
         tasksContainer.innerHTML = ""
         tasksContainer.append(projectTitle);

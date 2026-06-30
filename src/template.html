@@ -70,14 +70,17 @@
         
         <dialog id="task-modal">
             <form id="t-form">
+                <h3>New Task</h3>
                 <label for="t-title">Title</label>
                 <input type="text" id="t-title" name="t-title" required/>
                 <label for="t-description">Description</label>
                 <input type="text" id="t-description" name="t-description"/>
                 <label for="due-date">Due Date:</label>
                 <input type="date" name="due-date" id="due-date-form">
-                <label for="importance">Important:</label>
-                <input type="checkbox" name="importance" id="importance">
+                <div id="important-checkbox">
+                    <label for="importance">Important:</label>
+                    <input type="checkbox" name="importance" id="importance">
+                </div>
                 <div>
                     <button id="t-close" type="button">Cancel</button>
                     <button id="t-submit" type="submit">Add</button>
@@ -87,6 +90,7 @@
 
         <dialog id="edit-task-modal">
             <form id="edit-t-form">
+                <h3>Edit Task</h3>
                 <label for="edit-t-title">Title</label>
                 <input type="text" id="edit-t-title" name="edit-t-title" required/>
                 <label for="edit-t-description">Description</label>
@@ -98,6 +102,21 @@
                     <button id="edit-t-submit" type="submit">Add</button>
                 </div>
             </form>
+        </dialog>
+
+        <dialog id="delete-project">
+            <h3>Delete Project?</h3>
+            <div>
+                <button id="delete-project-btn" class="delete-q-btn"><p>Delete</p></button>
+                <button id="cancel-delete-project" class="cancel-q-btn"><p>Cancel</p></button>
+            </div>
+        </dialog>
+        <dialog id="delete-task">
+            <h3>Delete Task?</h3>
+            <div>
+                <button id="delete-task-btn" class="delete-q-btn"><p>Delete</p></button>
+                <button id="cancel-delete-task" class="cancel-q-btn"><p>Cancel</p></button>
+            </div>
         </dialog>
     </div>
 

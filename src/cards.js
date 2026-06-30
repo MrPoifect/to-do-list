@@ -1,5 +1,5 @@
 import { storageController, data } from "./storage.js";
-import { projectsContainer, uiController, mainBody, dataInterface } from "./UI.js";
+import { projectsContainer, uiController, mainBody, dataInterface, currentTab } from "./UI.js";
 export { cardCreator }
 
 const editProjectModal = document.getElementById("edit-project-modal");
@@ -59,7 +59,7 @@ function editTask() {
 
     editTaskForm.addEventListener("submit", function (e) {
         e.preventDefault();
-        storageController.modifyTaskData(editTaskModal.className, editTaskForm);
+        storageController.modifyTaskData(editTaskModal.className, editTaskForm, currentTab);
         editTaskModal.close();
         mainBody.classList.remove("blurred");
     });
@@ -103,8 +103,9 @@ const cardCreator = (() => {
         buttonDiv.appendChild(projectDeleteBtn);
 
         projectDeleteBtn.addEventListener("click", function(e) {
-            e.stopPropagation(); 
-            storageController.deleteProject(projectID)});
+            e.stopPropagation();
+            storageController.deleteProject(projectID)
+            });
 
         projectModifyBtn.addEventListener("click", function (e) {
             e.stopPropagation();

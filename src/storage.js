@@ -33,9 +33,11 @@ const storageController = (() => {
 }
 
     function deleteProject(UUID) {
+
         //delete all child tasks first
         for (let i = data.tasks.length - 1; i >= 0; i--) { 
             if (data.tasks[i].projectId === UUID) {
+                console.log("deleteTask")
                 data.tasks.splice(i, 1);
             }
         }
@@ -54,7 +56,7 @@ const storageController = (() => {
         saveData();
     }
 
-    function modifyTaskData(UUID, form) {
+    function modifyTaskData(UUID, form, currentTab) {
         
         const targetTask = data.tasks.find(task => task.id === UUID)
         const title = form.elements['edit-t-title'].value;
@@ -67,7 +69,7 @@ const storageController = (() => {
 
         saveData();
         uiController.refreshContent();
-
+        uiController.displayTabTasks(currentTab, targetTask.projectId)
     }
 
     function toggleTaskImportance(UUID, btn) {
@@ -116,6 +118,7 @@ const storageController = (() => {
     }
 
     function deleteTask(UUID) {
+
         const targetTask = data.tasks.find(task => task.id === UUID)
         const taskIndex = data.tasks.indexOf(targetTask);
         data.tasks.splice(taskIndex, 1);
