@@ -342,22 +342,11 @@ const dataInterface = (() => {
         }
     }
 
-    function toggleTaskImportance(UUID, btn) {
-        const targetTask = data.tasks.find(task => task.id === UUID)
 
-        if (targetTask.important) {
-            targetTask.important = false;
-            btn.classList.remove("true");
-        } else { 
-            targetTask.important = true
-            btn.classList.add("true");
-            };
-        uiController.refreshContent();
-    }
 
 
     return {submitProject, openProject, submitTask, 
-        openAllTasks, openTodayTasks, openWeekTasks, openImportantTasks, toggleTaskImportance}
+        openAllTasks, openTodayTasks, openWeekTasks, openImportantTasks,}
 })();
 
 

@@ -88,50 +88,95 @@ const cardCreator = (() => {
 
     function renderTaskCard(index) {
         const currentTask = data.tasks[index];
+        const parentProject = data.projects.find(project => project.id === currentTask.projectId)
         const taskID = currentTask.id;
         const projectID = currentTask.projectId;
         const taskImportance = currentTask.important;
+        const isTaskComplete = currentTask.completed;
+        const isTaskExpanded = currentTask.expanded;
 
         const tasksContainer = document.getElementById("tasks-content");
         const taskCard = document.createElement("div");
         taskCard.classList.add("task-card");
         tasksContainer.appendChild(taskCard);
 
+        const taskMainContent = document.createElement("div");
+        taskMainContent.id = "task-main-content";
+        taskCard.appendChild(taskMainContent)
+
+        const taskExpandBtn = document.createElement("button");
+        taskExpandBtn.id = "task-expand-btn";
+        taskExpandBtn.classList.add(isTaskExpanded);
+        taskMainContent.appendChild(taskExpandBtn)
+
+        const taskCompletedBtn = document.createElement("button");
+        taskCompletedBtn.textContent = "Complete";
+        taskCompletedBtn.id = "task-complete-btn";
+        taskCompletedBtn.classList.add(isTaskComplete)
+        taskMainContent.appendChild(taskCompletedBtn);
+
+        const taskInfoDiv = document.createElement("div");
+        taskInfoDiv.id = "task-info"
+        taskMainContent.appendChild(taskInfoDiv);
+
         const taskTitle = document.createElement("h3");
         taskTitle.classList.add("task-title");
         taskTitle.textContent = currentTask.title;
-        taskCard.appendChild(taskTitle);
+        taskInfoDiv.appendChild(taskTitle);
 
-        const taskIDDisplay = document.createElement("p");
-        taskIDDisplay.textContent = ("Task ID: " + taskID)
-        taskCard.appendChild(taskIDDisplay);
+
 
         const taskProjectID = document.createElement("p");
-        taskProjectID.textContent = ("Project ID: " + projectID)
-        taskCard.appendChild(taskProjectID);
+        taskProjectID.textContent = (parentProject.title)
+        taskInfoDiv.appendChild(taskProjectID);
+
+        const dueDiv = document.createElement("div");
+        dueDiv.textContent = "Due:"
+        dueDiv.id = "due-div";
+        taskMainContent.appendChild(dueDiv)
 
         const taskDueDate = document.createElement("p");
-        taskDueDate.textContent =("Due date: " + currentTask.dueDate)
-        taskCard.appendChild(taskDueDate);
+        taskDueDate.textContent =(currentTask.dueDate)
+        taskDueDate.id = "due-date";
+        dueDiv.appendChild(taskDueDate);
 
         const taskImportantBtn = document.createElement("button");
-        taskImportantBtn.textContent = ("Important: " + taskImportance)
+        taskImportantBtn.id = "task-important-btn"
         taskImportantBtn.classList.add(taskImportance)
-        taskCard.appendChild(taskImportantBtn)
+        taskMainContent.appendChild(taskImportantBtn)
 
         const taskDeleteBtn = document.createElement("button");
-        taskDeleteBtn.textContent = "Delete"
-        taskCard.appendChild(taskDeleteBtn);
+        taskDeleteBtn.id = "task-delete-btn"
+        taskMainContent.appendChild(taskDeleteBtn);
+
+        const taskExpandDiv = document.createElement("div");
+        taskExpandDiv.id = "task-description-container"
+        taskExpandDiv.classList.add(isTaskExpanded);
+        taskCard.appendChild(taskExpandDiv)
+
+        const taskDescription = document.createElement("p");
+        taskDescription.textContent = (currentTask.description)
+        taskExpandDiv.appendChild(taskDescription);
 
         taskImportantBtn.addEventListener("click", function (e) {
             e.stopPropagation();
-            dataInterface.toggleTaskImportance(taskID, taskImportantBtn);
+            storageController.toggleTaskImportance(taskID, taskImportantBtn);
+        })
+
+        taskCompletedBtn.addEventListener("click", function (e) {
+            e.stopPropagation();
+            storageController.toggleTaskComplete(taskID, taskCompletedBtn);
         })
 
         taskDeleteBtn.addEventListener("click", function (e) {
-            storageController.deleteTask(taskID);
             tasksContainer.removeChild(taskCard);
+            storageController.deleteTask(taskID);
         });
+
+        taskExpandBtn.addEventListener("click", function (e) {
+            e.stopPropagation();
+            storageController.toggleTaskExpand(taskID, taskExpandBtn, taskExpandDiv)
+        })
 
     }
 

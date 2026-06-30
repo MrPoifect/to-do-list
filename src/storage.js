@@ -48,11 +48,50 @@ const storageController = (() => {
         dataInterface.openAllTasks();
     }
 
-    function addNewTask(title, projectId, description, dueDate, important) {
+    function addNewTask(title, projectId, description, dueDate, important,) {
         const UUID = crypto.randomUUID();
 
-        data.tasks.push(new Task(title, UUID, projectId, description, dueDate, important));
+        data.tasks.push(new Task(title, UUID, projectId, description, dueDate, important,));
         saveData();
+    }
+
+    function toggleTaskImportance(UUID, btn) {
+        const targetTask = data.tasks.find(task => task.id === UUID)
+
+        if (targetTask.important) {
+            targetTask.important = false;
+            btn.classList.remove("true");
+        } else { 
+            targetTask.important = true
+            btn.classList.add("true");
+            };
+        uiController.refreshContent();
+    }
+
+    function toggleTaskComplete(UUID, btn) {
+        const targetTask = data.tasks.find(task => task.id === UUID);
+
+        if (targetTask.completed) {
+            targetTask.completed = false;
+            btn.classList.remove("true");
+        } else {
+            targetTask.completed = true;
+            btn.classList.add("true");
+        }
+    }
+
+    function toggleTaskExpand(UUID, btn, div) {
+        const targetTask = data.tasks.find(task => task.id === UUID);
+
+        if (targetTask.expanded) {
+            targetTask.expanded = false;
+            btn.classList.remove("true");
+            div.classList.remove("true")
+        } else {
+            targetTask.expanded = true;
+            btn.classList.add("true");
+            div.classList.add("true")
+        }
     }
 
     function deleteTask(UUID) {
@@ -76,7 +115,9 @@ const storageController = (() => {
 }
 
 
-return {addNewProject, modifyProjectData, deleteProject, addNewTask, loadData, deleteTask}
+return {addNewProject, modifyProjectData, deleteProject, addNewTask, 
+    loadData, deleteTask, toggleTaskImportance, toggleTaskComplete,
+    toggleTaskExpand, }
 })();
 
 
@@ -88,7 +129,7 @@ function Project(title, id) {
     this.id = id;
 }
 
-function Task(title, id, projectId, description, dueDate, important) {
+function Task(title, id, projectId, description, dueDate, important,) {
     if (!new.target) {
         throw Error("Must use 'new' operator")
     }
@@ -98,6 +139,8 @@ function Task(title, id, projectId, description, dueDate, important) {
     this.description = description;
     this.dueDate = dueDate;
     this.important = important;
+    this.completed = false;
+    this.expanded = false;
 }
 
 
