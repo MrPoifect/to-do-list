@@ -27,8 +27,7 @@ const storageController = (() => {
         const targetProject = data.projects.find(project => project.id === UUID)
         const title = document.getElementById("edit-p-form").elements['edit-p-title'].value;
 
-        targetProject.title = title
-        console.log(UUID);
+        targetProject.title = title;
         saveData();
         uiController.refreshContent();
 }
@@ -55,6 +54,22 @@ const storageController = (() => {
         saveData();
     }
 
+    function modifyTaskData(UUID, form) {
+        
+        const targetTask = data.tasks.find(task => task.id === UUID)
+        const title = form.elements['edit-t-title'].value;
+        const description = form.elements['edit-t-description'].value;
+        const dueDate = form.elements['edit-t-duedate'].value;
+
+        targetTask.title = title;
+        targetTask.description = description;
+        targetTask.dueDate = dueDate;
+
+        saveData();
+        uiController.refreshContent();
+
+    }
+
     function toggleTaskImportance(UUID, btn) {
         const targetTask = data.tasks.find(task => task.id === UUID)
 
@@ -65,19 +80,24 @@ const storageController = (() => {
             targetTask.important = true
             btn.classList.add("true");
             };
+        saveData();
         uiController.refreshContent();
     }
 
-    function toggleTaskComplete(UUID, btn) {
+    function toggleTaskComplete(UUID, btn, fadeDiv) {
         const targetTask = data.tasks.find(task => task.id === UUID);
 
         if (targetTask.completed) {
             targetTask.completed = false;
             btn.classList.remove("true");
+            fadeDiv.classList.remove("fade");
         } else {
             targetTask.completed = true;
             btn.classList.add("true");
+            fadeDiv.classList.add("fade");
         }
+        saveData();
+        uiController.refreshContent();
     }
 
     function toggleTaskExpand(UUID, btn, div) {
@@ -92,6 +112,7 @@ const storageController = (() => {
             btn.classList.add("true");
             div.classList.add("true")
         }
+        saveData();
     }
 
     function deleteTask(UUID) {
@@ -117,7 +138,7 @@ const storageController = (() => {
 
 return {addNewProject, modifyProjectData, deleteProject, addNewTask, 
     loadData, deleteTask, toggleTaskImportance, toggleTaskComplete,
-    toggleTaskExpand, }
+    toggleTaskExpand, modifyTaskData, }
 })();
 
 

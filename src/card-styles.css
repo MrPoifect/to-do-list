@@ -1,0 +1,186 @@
+#tasks-container {
+    overflow: hidden;
+    text-align: center;
+}
+
+#tasks-content {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: flex-start;
+}
+
+.task-card {
+    background-color: rgb(209, 209, 209);
+    display: grid;
+    grid-template-rows: 1fr auto;
+    padding: 6px;
+    width: 80%;
+    margin: 8px 0px;
+    border-radius: 8px;
+    align-items: center;
+    position: relative;
+}
+
+#task-complete-btn {
+    background: none;
+    border: none;
+    background-repeat: no-repeat;
+    background-position: center;
+    width: 35px;
+    height: 35px;
+    background-image: url(./imgs/check.svg);
+}
+
+#task-main-content {
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    align-items: center;
+    grid-row: 1 / 2;
+    min-width: 0;
+
+}
+
+#task-info {
+    display: flex;
+    flex-direction: column;
+    margin-left: 14px;
+    white-space: nowrap;
+    text-overflow: ellipsis;
+    overflow: hidden;
+    width: calc(70%);
+    text-align: start;
+    font-size: 80%;
+
+}
+
+#task-info > h3 {
+    font-weight: 100;
+}
+
+#task-info > p {
+    font-size: 10px;
+    position: relative;
+    left: 2px;
+    
+}
+
+
+
+
+
+#task-important-btn {
+    background: none;
+    background-image: url(./imgs/star-grey.svg);
+    background-position: center;
+    background-repeat: no-repeat;
+    width: 35px;
+    height: 35px;
+    border: none;
+    margin-left: 8px;
+    align-content: center;
+}
+
+
+#task-important-btn.true {
+    background-image: url(./imgs/star-gold.svg);
+}
+
+
+#task-complete-btn.true {
+    background-image: url(./imgs/check-green.svg);
+}
+
+#task-delete-btn {
+    border: none;
+    background: none;
+    background-image: url(./imgs/trash-can-grey.svg);
+    background-repeat: no-repeat;
+    background-position: center;
+    width: 35px;
+    height: 35px;
+    margin-left: 8px;
+}
+
+#task-edit-btn:hover,
+#task-complete-btn:hover,
+#task-expand-btn:hover,
+#task-delete-btn:hover,
+#task-important-btn:hover {
+    filter: brightness(1.5);
+}
+
+#task-expand-btn {
+    border: none;
+    background: none;
+    background-image: url(./imgs/chevron-up.svg);
+    background-repeat: no-repeat;
+    width: 50px;
+    height: 50px;
+    background-position: center;
+}
+
+#task-expand-btn.true {
+    transform: scale(-1);
+    filter: brightness(1.5);
+}
+
+#task-edit-btn {
+    background: none;
+    border: none;
+    background-image: url(./imgs/note-edit-grey.svg);
+    background-repeat: no-repeat;
+    background-position: center;
+    width: 32px;
+    height: 32px;
+    margin-left: auto;
+}
+
+#task-description-container {
+    grid-row: 2 / -1;
+    align-content: center;
+    background-color: rgb(224, 224, 224);
+    height: 0px;
+    overflow: hidden;
+
+
+    border-radius: 8px;
+}
+
+#task-description-container.true {
+    height: fit-content;
+    padding: 8px;
+    margin: 8px 0px 0px;
+    overflow-wrap: break-word;
+    word-break: normal;
+    hyphens: auto;
+    -webkit-hyphens: auto;
+    -moz-hyphens: auto;
+    -ms-hyphens: auto;
+    font-size: small;
+    text-align: start;
+}
+
+#due-div {
+    font-size: 12px;
+    margin: 12px 0px 0px;
+    text-align: start;
+}
+
+#due-date {
+    text-align: start;
+    font-size: 10px;
+}
+
+#fade-div {
+    position: absolute;
+    width: 100%;
+    height: 100%;
+    border-radius: inherit;
+    pointer-events: none;
+}
+
+.fade {
+    background-color: rgba(109, 109, 109, 0.466);
+}

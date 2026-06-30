@@ -61,7 +61,12 @@ const uiController = (() => {
             currentTab = "important"
         });
 
-        completedBtn.addEventListener("click", () => highlightNavButton("completed"));
+        completedBtn.addEventListener("click", function () { 
+            highlightNavButton("completed")
+            dataInterface.openCompleteTasks();
+            adjustMenuForScreen();
+            currentTab = "completed"
+        });
         menuBtn.addEventListener("click", toggleMenu);
     }
 
@@ -211,7 +216,9 @@ const uiController = (() => {
                 break;
 
             case "completed":
-
+                    highlightNavButton("completed");
+                    dataInterface.openCompleteTasks();
+                    adjustMenuForScreen();
                 break;
             
 
@@ -342,19 +349,37 @@ const dataInterface = (() => {
         }
     }
 
+    function openCompleteTasks() {
+        const tasksContainer = document.getElementById("tasks-content");
+        const projectTitle = document.createElement("h2");
+        projectTitle.textContent = "Completed";
+
+        tasksContainer.innerHTML = ""
+        tasksContainer.append(projectTitle);
+        for (let i = 0 ; i < data.tasks.length; i++) {
+            if (data.tasks[i].completed){
+                cardCreator.renderTaskCard(i);
+            }
+        }
+
+    }
+
 
 
 
     return {submitProject, openProject, submitTask, 
-        openAllTasks, openTodayTasks, openWeekTasks, openImportantTasks,}
+        openAllTasks, openTodayTasks, openWeekTasks, openImportantTasks,
+    openCompleteTasks,}
 })();
 
 
 function adjustMenuForScreen() {
     const menuDiv = document.getElementById("side-bar");
+    const tasksDiv = document.getElementById("tasks-container");
     if (window.innerWidth <= 767) {
         menuDiv.classList.remove("opened")
         menuDiv.classList.add("collapsed")
+        tasksDiv.classList.remove("darken");
     };
     }
 

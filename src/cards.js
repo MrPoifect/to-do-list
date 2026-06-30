@@ -3,6 +3,7 @@ import { projectsContainer, uiController, mainBody, dataInterface } from "./UI.j
 export { cardCreator }
 
 const editProjectModal = document.getElementById("edit-project-modal");
+const editTaskModal = document.getElementById("edit-task-modal");
 
 
 
@@ -38,6 +39,37 @@ function editProject() {
     editProjectModal.showModal();
     mainBody.classList.add("blurred");
 }
+
+function editTask() {
+
+    const editTaskCloseBtn = document.getElementById("edit-t-close");
+    const editTaskForm = document.getElementById("edit-t-form");
+    const targetTask = data.tasks.find(task => task.id === editTaskModal.className);
+
+    editTaskForm.elements['edit-t-title'].value = "";
+    editTaskForm.elements['edit-t-title'].placeholder = targetTask.title;
+    editTaskForm.elements['edit-t-description'].value = ""
+    editTaskForm.elements['edit-t-description'].placeholder = targetTask.description;
+
+    editTaskCloseBtn.addEventListener("click", function (e) {
+        e.preventDefault();
+        editTaskModal.close();
+        mainBody.classList.remove("blurred");
+    });
+
+    editTaskForm.addEventListener("submit", function (e) {
+        e.preventDefault();
+        storageController.modifyTaskData(editTaskModal.className, editTaskForm);
+        editTaskModal.close();
+        mainBody.classList.remove("blurred");
+    });
+
+    editTaskModal.showModal();
+    mainBody.classList.add("blurred");
+}
+
+
+
 
 const cardCreator = (() => {
 
@@ -95,69 +127,88 @@ const cardCreator = (() => {
         const isTaskComplete = currentTask.completed;
         const isTaskExpanded = currentTask.expanded;
 
+
         const tasksContainer = document.getElementById("tasks-content");
         const taskCard = document.createElement("div");
-        taskCard.classList.add("task-card");
-        tasksContainer.appendChild(taskCard);
+            taskCard.classList.add("task-card");
+            tasksContainer.appendChild(taskCard);
 
         const taskMainContent = document.createElement("div");
-        taskMainContent.id = "task-main-content";
-        taskCard.appendChild(taskMainContent)
+            taskMainContent.id = "task-main-content";
+            taskCard.appendChild(taskMainContent)
 
         const taskExpandBtn = document.createElement("button");
-        taskExpandBtn.id = "task-expand-btn";
-        taskExpandBtn.classList.add(isTaskExpanded);
-        taskMainContent.appendChild(taskExpandBtn)
+            taskExpandBtn.id = "task-expand-btn";
+            taskExpandBtn.classList.add(isTaskExpanded);
+            taskMainContent.appendChild(taskExpandBtn)
 
         const taskCompletedBtn = document.createElement("button");
-        taskCompletedBtn.textContent = "Complete";
-        taskCompletedBtn.id = "task-complete-btn";
-        taskCompletedBtn.classList.add(isTaskComplete)
-        taskMainContent.appendChild(taskCompletedBtn);
+            taskCompletedBtn.id = "task-complete-btn";
+            taskCompletedBtn.classList.add(isTaskComplete)
+            taskMainContent.appendChild(taskCompletedBtn);
 
         const taskInfoDiv = document.createElement("div");
-        taskInfoDiv.id = "task-info"
-        taskMainContent.appendChild(taskInfoDiv);
+            taskInfoDiv.id = "task-info"
+            taskMainContent.appendChild(taskInfoDiv);
 
         const taskTitle = document.createElement("h3");
-        taskTitle.classList.add("task-title");
-        taskTitle.textContent = currentTask.title;
-        taskInfoDiv.appendChild(taskTitle);
+            taskTitle.classList.add("task-title");
+            taskTitle.textContent = currentTask.title;
+            taskInfoDiv.appendChild(taskTitle);
 
 
 
         const taskProjectID = document.createElement("p");
-        taskProjectID.textContent = (parentProject.title)
-        taskInfoDiv.appendChild(taskProjectID);
+            taskProjectID.textContent = (parentProject.title)
+            taskInfoDiv.appendChild(taskProjectID);
 
-        const dueDiv = document.createElement("div");
-        dueDiv.textContent = "Due:"
-        dueDiv.id = "due-div";
-        taskMainContent.appendChild(dueDiv)
 
-        const taskDueDate = document.createElement("p");
-        taskDueDate.textContent =(currentTask.dueDate)
-        taskDueDate.id = "due-date";
-        dueDiv.appendChild(taskDueDate);
+        //Buttons
+        const editTaskBtn = document.createElement("button");
+            editTaskBtn.id ="task-edit-btn";
+            taskMainContent.appendChild(editTaskBtn);
+
 
         const taskImportantBtn = document.createElement("button");
-        taskImportantBtn.id = "task-important-btn"
-        taskImportantBtn.classList.add(taskImportance)
-        taskMainContent.appendChild(taskImportantBtn)
+            taskImportantBtn.id = "task-important-btn"
+            taskImportantBtn.classList.add(taskImportance)
+            taskMainContent.appendChild(taskImportantBtn)
 
         const taskDeleteBtn = document.createElement("button");
-        taskDeleteBtn.id = "task-delete-btn"
-        taskMainContent.appendChild(taskDeleteBtn);
+            taskDeleteBtn.id = "task-delete-btn"
+            taskMainContent.appendChild(taskDeleteBtn);
+
+        //Expanded section    
 
         const taskExpandDiv = document.createElement("div");
-        taskExpandDiv.id = "task-description-container"
-        taskExpandDiv.classList.add(isTaskExpanded);
-        taskCard.appendChild(taskExpandDiv)
+            taskExpandDiv.id = "task-description-container"
+            taskExpandDiv.classList.add(isTaskExpanded);
+            taskCard.appendChild(taskExpandDiv)
+
+        const taskTitleDupe = document.createElement("h3");
+            taskTitleDupe.textContent = currentTask.title;
+            taskExpandDiv.appendChild(taskTitleDupe);
 
         const taskDescription = document.createElement("p");
-        taskDescription.textContent = (currentTask.description)
-        taskExpandDiv.appendChild(taskDescription);
+            taskDescription.textContent = (currentTask.description)
+            taskExpandDiv.appendChild(taskDescription);
 
+        //Due Date
+        const dueDiv = document.createElement("div");
+            dueDiv.textContent = "Due:"
+            dueDiv.id = "due-div";
+            taskExpandDiv.appendChild(dueDiv)
+
+        const taskDueDate = document.createElement("p");
+            taskDueDate.textContent =(currentTask.dueDate)
+            taskDueDate.id = "due-date";
+            dueDiv.appendChild(taskDueDate);
+
+        const fadeDiv = document.createElement("div");
+            fadeDiv.id = "fade-div";
+            taskCard.appendChild(fadeDiv);
+
+        //Button events    
         taskImportantBtn.addEventListener("click", function (e) {
             e.stopPropagation();
             storageController.toggleTaskImportance(taskID, taskImportantBtn);
@@ -165,7 +216,15 @@ const cardCreator = (() => {
 
         taskCompletedBtn.addEventListener("click", function (e) {
             e.stopPropagation();
-            storageController.toggleTaskComplete(taskID, taskCompletedBtn);
+
+            storageController.toggleTaskComplete(taskID, taskCompletedBtn, fadeDiv);
+
+        })
+
+        editTaskBtn.addEventListener("click", function (e) {
+            e.stopPropagation();
+            editTaskModal.className = taskID;
+            editTask();
         })
 
         taskDeleteBtn.addEventListener("click", function (e) {
@@ -177,6 +236,13 @@ const cardCreator = (() => {
             e.stopPropagation();
             storageController.toggleTaskExpand(taskID, taskExpandBtn, taskExpandDiv)
         })
+
+        if (isTaskComplete) {
+            fadeDiv.classList.add("fade");
+        }
+        if (taskImportance) {
+            taskImportantBtn.classList.add("true");
+        }
 
     }
 
