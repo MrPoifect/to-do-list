@@ -1,277 +1,263 @@
 @font-face {
-    font-family: roboto;
-    src: url(./fonts/Roboto-Medium.ttf);
+  font-family: roboto;
+  src: url(./fonts/Roboto-Medium.ttf);
 }
 
 * {
-    margin: 0;
-    padding: 0;
-    font-family: "roboto";
+  margin: 0;
+  padding: 0;
+  font-family: 'roboto';
 }
 
 html {
-    height: 100%;
+  height: 100%;
 }
 
 body {
-    height: 100%;
+  height: 100%;
 }
 
 h1 {
-    font-size: 25px;
-    margin-left: 6px;
-    color: rgb(233, 233, 233);
+  font-size: 25px;
+  margin-left: 6px;
+  color: rgb(233, 233, 233);
 }
 
-h2{
-    font-size: 30px;
-    padding: 20px 0px 0px;
-    margin-bottom: 18px;
-    border-bottom: solid 4px;
-    color: rgb(83, 83, 83);
+h2 {
+  font-size: 30px;
+  padding: 20px 0px 0px;
+  margin-bottom: 18px;
+  border-bottom: solid 4px;
+  color: rgb(83, 83, 83);
 }
 
 #ui-container {
-    display: grid;
-    grid-template-columns: auto 1fr;
-    grid-template-rows: auto 1fr;
-    height: 100vh;
+  display: grid;
+  grid-template-columns: auto 1fr;
+  grid-template-rows: auto 1fr;
+  height: 100vh;
 }
 
 #header {
-    background-image: linear-gradient(to right, rgb(50, 99, 122), rgb(86, 180, 187));
-    height: 60px;
-    grid-column: 1/-1;
-    grid-row: 1 / 2;
-    display: flex;
-    align-items: center;
-    padding-left: 14px;
+  background-image: linear-gradient(
+    to right,
+    rgb(50, 99, 122),
+    rgb(86, 180, 187)
+  );
+  height: 60px;
+  grid-column: 1/-1;
+  grid-row: 1 / 2;
+  display: flex;
+  align-items: center;
+  padding-left: 14px;
 }
 
 #menu-btn {
-    background: none;
-    border: none;
-    background-image: url(./imgs/menu.svg);
-    width: 40px;
-    height: 40px;
+  background: none;
+  border: none;
+  background-image: url(./imgs/menu.svg);
+  width: 40px;
+  height: 40px;
 }
-
-
 
 #content-container {
-grid-row: 2 / -1;
-grid-column: 1 / -1;
-display: grid;
-grid-template-columns: auto 1fr;
-height: 100vh -60px;
-width: 100%;
+  grid-row: 2 / -1;
+  grid-column: 1 / -1;
+  display: grid;
+  grid-template-columns: auto 1fr;
+  height: 100vh -60px;
+  width: 100%;
 }
 
-
-
-
 #tasks-content {
-    display: flex;
-    width: 100%;
-    height: 100%;
-    background-color: rgb(245, 245, 245);
-    grid-template-columns: 2 / -1;
-    justify-content: center;
+  display: flex;
+  width: 100%;
+  height: 100%;
+  background-color: rgb(245, 245, 245);
+  grid-template-columns: 2 / -1;
+  justify-content: center;
 }
 
 #tasks-container {
-
 }
 
 .blurred {
-    filter: blur(5px);
+  filter: blur(5px);
 }
 
 dialog {
-    margin: auto;
-    margin-top: 120px;
-    border: none;
-    min-width: 60%;
-    max-width: 600px;
-    height: 260px ;
-    border-radius: 12px;
-    box-shadow: 0px 0px 16px grey;
+  margin: auto;
+  margin-top: 120px;
+  border: none;
+  min-width: 60%;
+  max-width: 600px;
+  height: 260px;
+  border-radius: 12px;
+  box-shadow: 0px 0px 16px grey;
 }
 
 dialog > form {
-    display: flex;
-    flex-direction: column;
-    gap: 16px;
-    border: 2px solid white;
-
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+  border: 2px solid white;
 }
 
-dialog > form > h3  {
-    background-image: linear-gradient(to right, rgb(86, 180, 187), rgb(50, 99, 122));
-    padding: 16px;
-    text-align: center;
-    border-radius: 12px 12px 0px 0px;
-    color: rgb(250, 250, 250);
+dialog > form > h3 {
+  background-image: linear-gradient(
+    to right,
+    rgb(86, 180, 187),
+    rgb(50, 99, 122)
+  );
+  padding: 16px;
+  text-align: center;
+  border-radius: 12px 12px 0px 0px;
+  color: rgb(250, 250, 250);
 }
 
 dialog > form > label {
-    margin: 0px 25px;
+  margin: 0px 25px;
 }
 
 dialog > form > input {
-    margin: 0px 25px;
-    font-size: 20px;
-    padding: 2px;
+  margin: 0px 25px;
+  font-size: 20px;
+  padding: 2px;
 }
 
 dialog > form > div {
-    display: flex;
-    margin-left: auto;
-    margin-right: 25px;
-    margin-top: 36px;
-    gap: 12px;
+  display: flex;
+  margin-left: auto;
+  margin-right: 25px;
+  margin-top: 36px;
+  gap: 12px;
 }
 
 dialog > form > div > button {
-    border-radius: 6px;
-    padding: 12px 20px;
-    margin-bottom: 20px;
+  border-radius: 6px;
+  padding: 12px 20px;
+  margin-bottom: 20px;
 }
 
 #t-submit,
 #edit-t-submit,
 #p-submit,
-#edit-p-submit{
-    background-color: rgb(86, 180, 187);
-    border: none;
+#edit-p-submit {
+  background-color: rgb(86, 180, 187);
+  border: none;
 
-   /* background-image: linear-gradient(to right, rgb(86, 180, 187), rgb(50, 99, 122)); */
+  /* background-image: linear-gradient(to right, rgb(86, 180, 187), rgb(50, 99, 122)); */
 }
 
 #t-close,
 #edit-t-close,
 #p-close,
 #edit-p-close {
-    background: none;
-    border: 1px solid black;
-
+  background: none;
+  border: 1px solid black;
 }
-
-
 
 #task-modal,
 #edit-task-modal {
-    height: fit-content;
+  height: fit-content;
 }
 
 #importance {
-
-    width: 20px;
-    height: 20px;
+  width: 20px;
+  height: 20px;
 }
 
 #important-checkbox {
-    display: flex;
-    flex-direction: row;
-    align-self: center;
-    margin: 8px auto 0px 25px;
+  display: flex;
+  flex-direction: row;
+  align-self: center;
+  margin: 8px auto 0px 25px;
 }
-
-
 
 #delete-project,
 #delete-task {
-    margin: auto;
-    height: fit-content;
-    min-width: 250px;
-    border: white 2px solid;
+  margin: auto;
+  height: fit-content;
+  min-width: 250px;
+  border: white 2px solid;
 }
 
 #delete-project > div,
 #delete-task > div {
-    height: 75px;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    gap: 30px;
-    padding: 16px;
+  height: 75px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 30px;
+  padding: 16px;
 }
 
 #delete-project > div > button,
 #delete-task > div > button {
-    height: 40px;
-    border-radius: 6px;
-    padding: 12px 20px;
+  height: 40px;
+  border-radius: 6px;
+  padding: 12px 20px;
 }
 
-dialog > h3  {
-    background-image: linear-gradient(to right, rgb(86, 180, 187), rgb(50, 99, 122));
-    padding: 16px;
-    text-align: center;
-    border-radius: 12px 12px 0px 0px;
-    color: rgb(250, 250, 250);
+dialog > h3 {
+  background-image: linear-gradient(
+    to right,
+    rgb(86, 180, 187),
+    rgb(50, 99, 122)
+  );
+  padding: 16px;
+  text-align: center;
+  border-radius: 12px 12px 0px 0px;
+  color: rgb(250, 250, 250);
 }
 
 .delete-q-btn {
-    background-color: rgb(201, 74, 74);
-    color: rgb(255, 255, 255);
-    font-size: 18px;
-    border: none;
+  background-color: rgb(201, 74, 74);
+  color: rgb(255, 255, 255);
+  font-size: 18px;
+  border: none;
 }
 
-
 .cancel-q-btn {
-    background: none;
-    font-size: 18px;
+  background: none;
+  font-size: 18px;
 }
 
 .delete-q-btn > p {
-    position: relative;
-    bottom: 2px;
+  position: relative;
+  bottom: 2px;
 }
 
 .cancel-q-btn > p {
-    position: relative;
-    bottom: 4px
+  position: relative;
+  bottom: 4px;
 }
 
-
-
-
-
-
-
-
-
-@media (max-width: 767px){
-
-h2 {
+@media (max-width: 767px) {
+  h2 {
     font-size: 20px;
-}
+  }
 
-.darken {
+  .darken {
     opacity: 50%;
-}
+  }
 
-#side-bar { 
+  #side-bar {
     height: 100%;
     grid-column: 1 / 2;
-    background-color:rgb(179, 194, 197);
+    background-color: rgb(179, 194, 197);
     overflow-y: auto;
-}
+  }
 
-#tasks-container {
+  #tasks-container {
     width: 100vw;
-}
+  }
 
-#side-bar {
+  #side-bar {
     z-index: 1;
-}
+  }
 
-.opened {
+  .opened {
     position: fixed;
-}
-
-
-
+  }
 }
